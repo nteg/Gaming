@@ -1,52 +1,37 @@
-window.onload = function() {
-
-    var game = new Phaser.Game(560, 560, Phaser.CANVAS, 'gamecontainer', { preload:preload, create: create ,update:update});
-
-    function create () {
-        
-    }
-
-    var far;
-    var ship;
-
-function preload() {
-
-    game.load.image('background', 'images/galaxyBackground.png');
-    game.load.image('player','images/speedship.png');
+SpaceShooter.Game = function(game) {
+    this.far;
+    this.ship;
 }
 
-function create() {
+SpaceShooter.Game.prototype = {
+
+    create: function () {
 
         //  To make the sprite move we need to enable Arcade Physics
-    game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.physics.startSystem(Phaser.Physics.ARCADE);
 
-    background = game.add.tileSprite(0, 0, 560, 560, 'background');
-    ship = game.add.sprite(10,200,'player'); 
+        background = this.add.tileSprite(0, 0, 560, 560, 'background');
+        ship = this.add.sprite(10,200,'player'); 
     
-     game.physics.enable(ship,Phaser.Physics.ARCADE);
-     game.camera.follow(ship);
-    // ship.body.velocity.x=20;
-}
+        this.physics.enable(ship,Phaser.Physics.ARCADE);
+        this.camera.follow(ship);
+        
+        // ship.body.velocity.x=20;
+    },
 
-function update() {
+    update: function () {
 
-    background.tilePosition.x -= 1;
-    
+        background.tilePosition.x -= 1;  
 
 
-    //  If the ship is > 8px away from the pointer then let's move to it.
-    if (game.physics.arcade.distanceToPointer(ship, game.input.activePointer) > 8)
-    {
-        //  Make the object seek to the active pointer (mouse or touch).
-        game.physics.arcade.moveToPointer(ship, 300);
+        //  If the ship is > 8px away from the pointer then let's move to it.
+        if (this.physics.arcade.distanceToPointer(ship, this.input.activePointer) > 8) {
+            //  Make the object seek to the active pointer (mouse or touch).
+            this.physics.arcade.moveToPointer(ship, 300);
+        } else {
+            //  Otherwise turn off velocity because we're close enough to the pointer
+            ship.body.velocity.set(0);
+        }
+
     }
-    else
-    {
-        //  Otherwise turn off velocity because we're close enough to the pointer
-        ship.body.velocity.set(0);
-    
-
-}
-
-}
 };
