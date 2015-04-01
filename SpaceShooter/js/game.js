@@ -34,7 +34,7 @@ function update() {
     
 
 
-    //  If the ship is > 8px away from the pointer then let's move to it
+    //  If the ship is > 8px away from the pointer then let's move to it.
     if (game.physics.arcade.distanceToPointer(ship, game.input.activePointer) > 8)
     {
         //  Make the object seek to the active pointer (mouse or touch).
