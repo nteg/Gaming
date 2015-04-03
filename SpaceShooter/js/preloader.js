@@ -11,6 +11,7 @@ SpaceShooter.Preloader.prototype = {
 		this.load.setPreloadSprite(this.preloadBar);
         this.load.image('background', 'images/galaxyBackground.png');
         this.load.image('player','images/speedship.png');
+        this.load.image('bullet1', 'images/bullet1.png');
     },
     
     create: function () {
