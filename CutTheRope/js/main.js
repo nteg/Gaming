@@ -6,6 +6,7 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'gameContainer', {
     render : render
 });
 
+
 var gameObjects = {
     anchors : [],
     ropes   : []
@@ -13,11 +14,10 @@ var gameObjects = {
 };
 
 function preload() {
-
     game.load.image('bead', 'images/origional/obj_pollen_hd.png');
     game.load.image('duck', 'images/phaser/darkwing_crazy.png');
     game.load.image('orb', 'images/phaser/orb-blue.png');
-
+   
     //game.load.spritesheet('chain', 'assets/sprites/chain.png', 16, 26);
 
 }
@@ -81,5 +81,6 @@ function render(){
 function onUserClick(pointer){
     console.log(pointer);
     game.physics.p2.removeConstraint(gameObjects.ropes[0].joints[10]);
+    
 }
 
