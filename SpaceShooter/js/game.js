@@ -27,7 +27,7 @@ SpaceShooter.Game.prototype = {
         this.weapons.push(new Weapon.SingleBullet(this.game));
         this.currentWeapon = 0;
         this.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
-      //  this.camera.follow(ship);
+        //  this.camera.follow(ship);
         
         // ship.body.velocity.x=20;
     },
