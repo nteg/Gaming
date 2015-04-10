@@ -4,10 +4,7 @@ CutTheRope.Boot = function (game) {};
 
 CutTheRope.Boot.prototype = {
     preload: function() {
-        this.load.image('preloadBar','images/loader_bar.png');
-        this.load.image('titleimage','images/TitleImage.png');
-        this.load.image('strawberry','images/strawberry.png');
-        this.load.atlasXML('bunny', 'images/spritesheets/bunny.png', 'images/spritesheets/bunny.xml');
+       
         this.load.bitmapFont('eightbitwonder', 'fonts/eightbitwonder.png', 'fonts/eightbitwonder.fnt');
     },
     

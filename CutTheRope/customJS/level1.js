@@ -7,6 +7,7 @@ CutTheRope.level1 = function(game) {
     this.monster;
     this.monster1;
     this.monster2;
+    this.dude;
 };
 
 
@@ -32,6 +33,11 @@ CutTheRope.level1.prototype = {
         
          this.monster2=buildMonster(this, 750, 800, 'bunny', 'Bunny0000');
         this.monster2.animations.play('full', 24, true);
+        
+       // this.dude = buildDude(this,600,600,'dude');
+       // this.dude.animations.play('left');
+       // this.dude.frame = 4;
+        
         
          this.strawberry.enableBody = true;
         this.physics.arcade.enableBody(this.strawberry);

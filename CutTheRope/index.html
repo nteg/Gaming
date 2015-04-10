@@ -5,11 +5,11 @@
 	<title>Cut The Rope</title>
     <script src="libs/phaser.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="Boot.js"></script>
-    <script src="Preloader.js"></script>
-    <script src="universalCustomFunctions.js"></script>
-    <script src="systemObjects.js"></script>
-    <script src="level1.js"></script>
+    <script src="customJS/Boot.js"></script>
+    <script src="customJS/Preloader.js"></script>
+    <script src="customJS/universalCustomFunctions.js"></script>
+    <script src="customJS/systemObjects.js"></script>
+    <script src="customJS/level1.js"></script>
 	<style>
 		body {
 			padding: 0;
@@ -24,7 +24,7 @@
     <script type="text/javascript">
         window.onload = function(){
             var game = new Phaser.Game(1500,900,Phaser.Auto, 'gameContainer');
-            $(window).resize(function() { window.resizeGame(); } );
+            $(window).resize(function() { window.resizeGame(game); } );
             game.state.add('Boot',CutTheRope.Boot);
             game.state.add('Preloader',CutTheRope.Preloader);
             game.state.add('level1',CutTheRope.level1);
