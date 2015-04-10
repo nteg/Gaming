@@ -20,16 +20,19 @@ function addAnimationWithXmlFile(animationObject, game, animationIdentifier, ani
 function createAnimation(game,screenPositionX, screenPositionY, imageIdentifier){
    
     var animationObject = game.add.sprite(screenPositionX, screenPositionY, imageIdentifier);
+     animationObject.anchor.setTo(0.5, 0.5);
+    animationObject.enableBody = true;
+       game.physics.arcade.enableBody(animationObject);
     return animationObject;
 }
 
 function addAnimation(game,animationObject, animationIdentifier, animationStartArrayPoint, animationStopArrayPoint, animationFramesPerSecond, animationRepet ){
     if(animationStartArrayPoint != NaN && animationStopArrayPoint != NaN){
-      //  animationObject.animations.add('left', [0, 1, 2, 3], 10, true);//.animations.add(animationIdentifier, [0, 1, 2, 3], animationFramesPerSecond, animationRepet);
-       // animationObject.frame = 4;
+         animationObject.animations.add(animationIdentifier, game.math.numberArray(animationStartArrayPoint,animationStopArrayPoint), animationFramesPerSecond, animationRepet);
+      
     }
     else{
-        animationObject.animations.add(animationIdentifier);
+       animationObject.animations.add(animationIdentifier);
     }
     return animationObject;
 }
