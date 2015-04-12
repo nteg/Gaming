@@ -12,6 +12,9 @@ SpaceShooter.Preloader.prototype = {
         this.load.image('background', 'images/galaxyBackground.png');
         this.load.image('player','images/speedship.png');
         this.load.image('bullet1', 'images/bullet1.png');
+        this.load.image('meteor1', 'images/meteorBrown_big1.png');    
+        this.load.atlasXML('sheet', 'images/spritesheets/sheet.png', 'images/spritesheets/sheet.xml');
+        
     },
     
     create: function () {

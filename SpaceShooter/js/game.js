@@ -5,6 +5,7 @@ SpaceShooter.Game = function(game) {
     
     this.weapons = [];
     this.currentWeapon = 0;
+    this.asteroids;
 }
 
 SpaceShooter.Game.prototype = {
@@ -27,11 +28,41 @@ SpaceShooter.Game.prototype = {
         this.weapons.push(new Weapon.SingleBullet(this.game));
         this.currentWeapon = 0;
         this.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
-        //  this.camera.follow(ship);
-        
-        // ship.body.velocity.x=20;
+        this.buildAsteroids();
     },
+    
+    buildAsteroids: function() {
+     this.asteroids = this.game.add.group();
+    
+    //enable physics in them
+    this.asteroids.enableBody = true;
+    this.asteroids.physicsBodyType = Phaser.Physics.ARCADE;
 
+    //phaser's random number generator
+var asteriod   = this.asteroids.create(this.world.width, this.rnd.realInRange(0, 400), 'meteor1');           
+        //physics properties
+        asteriod.body.velocity.x = -80;
+        asteriod.body.velocity.y = this.rnd.realInRange(-10, 10);
+       // asteriod.body.immovable = true;
+        asteriod.checkWorldBounds = true;
+asteriod.events.onOutOfBounds.add(this.resetAsteroid, this);     
+        
+    },
+    
+    resetAsteroid: function(asteriod) {
+        if(asteriod.x < 0) {
+            //TODO : random delay to generate the asteroid need to be added
+          this.respawnAsteroid(asteriod);
+        }
+        
+    },
+    
+    respawnAsteroid: function(asteriod) { 
+        asteriod.reset(this.world.width, this.rnd.realInRange(0, 400));
+         asteriod.body.velocity.x = -80;
+        asteriod.body.velocity.y = this.rnd.realInRange(-10, 10);
+    },
+    
     update: function () {
 
         background.tilePosition.x -= 1;  
