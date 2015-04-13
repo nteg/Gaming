@@ -36,9 +36,9 @@ function buildOmnom(game,screenPositionX, screenPositionY, imageIdentifier) {
 function buildAnt(game,screenPositionX, screenPositionY, imageIdentifier) {
     
     var ant = createAnimation(game,screenPositionX, screenPositionY, imageIdentifier);
-    ant = addAnimation(game,ant, 'eat',0,3 , 10, false );
+    ant = addAnimation(game,ant, 'eat',0,3 , 10, true );
      ant = addAnimation(game,ant, 'walk',0,2 , 10, true );
-    ant.scale.setTo(4,4);
+    ant.scale.setTo(6,6);
     return ant;
     
 }
@@ -87,4 +87,17 @@ function omnomFruitCollision(fruit,omnom){
             }, this);
             
         }
-    }
+}
+
+function antFruitCollision(fruit,ant){
+        if(fruit.exists){
+            // ant.animations.stop('walk');
+            ant.animations.play('eat');
+            ant.events.onAnimationLoop.add(function(){
+                fruit.kill();
+                ant.animations.stop('eat');
+                ant.animations.play('walk');
+            }, this);
+            
+        }
+}
