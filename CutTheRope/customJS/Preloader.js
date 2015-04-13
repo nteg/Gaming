@@ -14,7 +14,11 @@ CutTheRope.Preloader.prototype = {
        this.load.spritesheet('dude', 'images/spritesheets/dude.png', 32, 48);
        // this.load.spritesheet('omnom', 'images/spritesheets/omnom.png', 135, 135); 
         this.load.spritesheet('omnom', 'images/spritesheets/omnom-eat.png', 157, 162);
-          this.load.image('strawberry','images/strawberry.png');
+        this.load.spritesheet('ant', 'images/spritesheets/ant.png', 46, 23);
+         this.load.spritesheet('bubble','images/bubble.png',34,34);
+          this.load.spritesheet('apples','images/spritesheets/apples.png',82,82);
+        
+     
 	},
 
 	create: function () {

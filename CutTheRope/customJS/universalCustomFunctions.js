@@ -39,16 +39,16 @@ function addAnimation(game,animationObject, animationIdentifier, animationStartA
 
 
 function resizeGame(game) {
-var height = $(window).height();
-var width = $(window).width();
-	
-game.width = width;
-game.height = height;
-game.stage.bounds.width = width;
-game.stage.bounds.height = height;
-	
-if (game.renderType == Phaser.WEBGL)
-{
-	game.renderer.resize(width, height);
-}
+    var height = $(window).height();
+    var width = $(window).width();
+
+    game.width = width;
+    game.height = height;
+    game.stage.bounds.width = width;
+    game.stage.bounds.height = height;
+
+    if (game.renderType == Phaser.WEBGL)
+    {
+        game.renderer.resize(width, height);
+    }
 }

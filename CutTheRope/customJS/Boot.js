@@ -20,7 +20,7 @@ CutTheRope.Boot.prototype = {
 		this.scale.setScreenSize(true);
 
 		this.input.addPointer();
-		this.stage.backgroundColor = '#fff';
+		this.stage.backgroundColor = '#000';
         
         this.state.start('Preloader');
     }

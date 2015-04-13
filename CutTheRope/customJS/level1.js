@@ -10,6 +10,10 @@ CutTheRope.level1 = function(game) {
     this.dude;
     this.omnom;
      this.strawberry = null;
+     this.bubble;
+    this.apple;
+    this.ant;
+   
 };
 
 
@@ -24,48 +28,33 @@ CutTheRope.level1.prototype = {
 	},
 
 	create: function () {
-		//this.preloadBar.cropEnabled = false;
-       /**
-        this.monster= buildMonster(this, 1000, 600, 'bunny', 'Bunny0000');
-        this.monster.animations.play('rest', 24, true);
-        
-        this.monster1 =buildMonster(this, 1000, 700, 'bunny', 'Bunny0000');
-        this.monster1.animations.play('walk', 24, true);
-        
-         this.monster2=buildMonster(this, 1000, 800, 'bunny', 'Bunny0000');
-        this.monster2.animations.play('full', 24, true);
-        
-        this.dude = buildDude(this,600,600,'dude');
-      // this.dude.animations.play('right');
-          this.dude.animations.play('left');
-      // this.dude.frame = 4;
-        
-      */
-        this.omnom = buildOmnom(this,750,600,'omnom');
-      //  this.omnom.animations.play('eat');
+		
+        this.omnom = buildOmnom(this,750,800,'omnom');
         this.omnom.frame = 0;
+        
+        this.ant = buildAnt(this,500,600,'ant');
+        this.ant.animations.play('walk');
     
-         this.strawberry = this.add.sprite(this.world.centerX,this.world.centerY-220, 'strawberry');
-        this.strawberry.anchor.setTo(0.5,0.5);
-        this.strawberry.scale.setTo(0.1,0.1);
-         this.strawberry.enableBody = true;
-        this.physics.arcade.enableBody(this.strawberry);
-        this.strawberry.body.velocity.y = 200;
-        //this.strawberry.checkWorldBounds = true;
-        //this.strawberry.events.onOutOfBounds.add(this.resetRock, this);
-	},
-    
-    burstCollision: function(){
-        if(this.strawberry.exists){
-            this.omnom.animations.play('eat');
-            this.strawberry.kill();
-        }
+         this.apple = buildFruit(this,this.world.centerX,this.world.centerY-220, 'apples');
+        
+        this.bubble =  buildBubble(this,this.world.centerX,this.world.centerY, 'bubble');
+       
+       
     },
     
-  	update: function () {
-	   	this.ready = true;
-        this.physics.arcade.overlap(this.strawberry, this.omnom, this.burstCollision, null, this);
 
+    
+  	update: function () {
+         
+	   	this.ready = true;
+        this.physics.arcade.overlap(this.apple, this.omnom, omnomFruitCollision, null, this);
+        this.physics.arcade.overlap(this.apple, this.bubble, bubbleCollisionWithAnObject, null, this);
+         this.apple.body.maxVelocity.y = 130;
+        if(!this.bubble.exists){
+          
+            this.apple.body.acceleration.y= 100;
+        }
+        
 	}
 };
 
