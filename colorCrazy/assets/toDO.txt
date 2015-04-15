@@ -1,0 +1,7 @@
+to do for the game -
+1. Add new obstacels in the path of the car
+2. Detect collision of the car with the obstacels and end the game on the collission 
+3. End the game on car being moved out of the world.
+4. Make the game responsive enough to adjust different resolutions.
+5. Different levels of the game.
+5. Detect and rectify the lagging - kill the sprite when not in use.
