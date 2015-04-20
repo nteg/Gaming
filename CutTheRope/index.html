@@ -3,12 +3,28 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Cut The Rope</title>
-    <!--script src="js/phaser.min.js"></script-->
-    <script src="js/phaser.js"></script>
+    <!--script src="libs/phaser.min.js"></script-->
+    <script src="libs/phaser.min.js"></script>
+    <script src="js/preload.js"></script>
     <script src="js/rope.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/level1.js"></script>
+    <script src="js/systemObjects.js"></script>
+    <script src="js/universalCustomFunctions.js"></script>
 </head>
 <body oncontextmenu="return false;">
     <div id="gameContainer"></div>
+    <script type="text/javascript">
+        window.onload = function(){
+            var game = new Phaser.Game(1500,900,Phaser.Auto, 'gameContainer');
+
+            window.addEventListener("resize", function() {
+                resizeGame(game);
+            });
+            game.state.add('Preloader',CutTheRope.Preloader);
+            game.state.add('Level1',CutTheRope.Level1);
+            game.state.start('Preloader');
+           
+        }
+    </script>
 </body>
 </html>

@@ -20,7 +20,8 @@ function createRope(arg) {
         height = arg.imageConfig.radius || 16,        //  Height for the physics body
         width = arg.imageConfig.radius || 16,         //  This is the width for the physics body. If too small the rectangles will get scrambled together.
         maxForce = 20000,   //  The force that holds the rectangles together.
-        x, y;
+        x, y,
+        game= arg.game;
 
     //  Here we create our rope group
     beads = game.add.group();
@@ -36,7 +37,6 @@ function createRope(arg) {
 
         //  Set custom circle
         newBead.body.setCircle(width/2);
-
         if(i==0){
             myRevoluteConst.push( game.physics.p2.createRevoluteConstraint(newBead, [-width/2, 0], anchor.obj, [anchor.width/2, 0], maxForce) );
         }
