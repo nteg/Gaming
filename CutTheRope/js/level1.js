@@ -66,7 +66,7 @@ CutTheRope.Level1.prototype = {
         //ropeObj.beads.callAll('events.onInputDown.add', 'events.onInputDown', breakRope);
 
         gameObjects.omnom = createOmnom(game);
-debugger;
+
         setCollisions (game, gameObjects.omnom, pendulum, blockHit);
 
         /*this.omnom = buildOmnom(this,750,800,'omnom');
