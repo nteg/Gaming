@@ -25,8 +25,7 @@ var SimpleGame = (function () {
         
         this.score = 0;  
         this.labelScore = this.game.add.text(10, 10, "0", { font: "30px Arial", fill: "#ffffff" });      
-
-        //this.obstacleCount=0;
+      
 
         /*
         55  -   SUN
@@ -43,34 +42,6 @@ var SimpleGame = (function () {
         */
         
         var sceneFrames = [55, 24, 38, 37, 78, 82, 50, 35, 88, 91, 92,];
-               
-        /*
-        sceneObstacles=this.game.add.group();
-        sceneObstacles.enableBody=true;
-        sceneObstacles.physicsBodyType=Phaser.Physics.ARCADE;
-
-        //On adding obstacles in this manner it is gettng lost behnd the clouds
-        this.yellowBall=sceneObstacles.create(0,0,'balls',0);
-        this.yellowBall.scale.x=0.3;
-        this.yellowBall.scale.y=0.3;
-        this.yellowBall.body.gravity.y=100;
-        this.yellowBall.anchor.setTo(0,505);
-        
-        this.redBall=sceneObstacles.create(50,0,'balls',1);
-        this.redBall.scale.x=0.3;
-        this.redBall.scale.y=0.3;
-        
-
-        this.blueBall=sceneObstacles.create(100,0,'balls',2);
-        this.blueBall.scale.x=0.3;
-        this.blueBall.scale.y=0.3;
-        
-
-        this.greenBall=sceneObstacles.create(150,0,'balls',3);
-        this.greenBall.scale.x=0.3;
-        this.greenBall.scale.y=0.3;*/
-
-        //create a method to randomly generate these balls and place them 
 
 
         sceneActors = this.game.add.group();
@@ -134,51 +105,21 @@ var SimpleGame = (function () {
         this.truck.body.velocity.x = 10;
         this.truck.body.maxVelocity.x = 100;
         this.truck.body.colliderWorldBounds = true;
-
-        //*******Working code ********//
-        /*
-        this.redBall=this.game.add.sprite(150,400,'balls',1);
-        this.redBall.scale.x=0.3;
-        this.redBall.scale.y=0.3;
         
-        this.game.physics.arcade.enable(this.redBall);
-        this.redBall.body.gravity.y=500;
-        this.redBall.body.bounce.y=0.6;
-        this.redBall.body.colliderWorldBounds=true;
-        
-        this.yellowBall=this.game.add.sprite(250,400,'balls',0);
-        this.yellowBall.scale.x=0.3;
-        this.yellowBall.scale.y=0.3;
-        
-        this.game.physics.arcade.enable(this.yellowBall);
-        this.yellowBall.body.gravity.y=500;
-        this.yellowBall.body.bounce.y=0.6;
-        this.yellowBall.body.colliderWorldBounds=true;
-        
-        //******Working code ******* //
-        */
-        
-
-        //sceneObstacles.add(this.redBall);
-        //sceneObstacles.add(this.yellowBall);
 
 
 
         this.yellowBalls=this.game.add.group();
         this.yellowBalls.enableBody=true;
         this.yellowBalls.createMultiple(2000,'balls',0);
-        //this.yellowBalls.physicsBodyType = Phaser.Physics.ARCADE;
+        
 
         this.redBalls=this.game.add.group(); //create a group
         this.redBalls.enableBody=true; //Add physics to the group
         this.redBalls.createMultiple(2000,'balls',1);
-        //this.redBalls.physicsBodyType = Phaser.Physics.ARCADE;
-        //this.game.physics.arcade.enable(this.redBalls);               
-        //this.game.physics.arcade.enable([this.road, this.yellowBalls]);
-        //this.game.physics.arcade.enable([this.road, this.redBalls]);
 
         this.timer = this.game.time.events.loop(1000,addBalls,this);  
-        //addObstacles(this);
+
 
         cursors = this.game.input.keyboard.createCursorKeys();
     };
@@ -191,15 +132,6 @@ var SimpleGame = (function () {
 
         //this.game.physics.arcade.overlap(this.yellowBalls,this.truck, restartGame,null,this);
         this.game.physics.arcade.overlap(this.redBalls,this.truck, collectBalls,null,this);
-                 
-        /* working code
-          this.game.physics.arcade.collide(this.road,this.redBall);
-
-        this.game.physics.arcade.collide(this.road,this.yellowBall); 
-
-        this.game.physics.arcade.overlap(this.truck, this.redBall, collectBalls);
-        this.game.physics.arcade.overlap(this.truck, this.yellowBall, restartGame );*/
-        
 
         //this.truck.animations.play('rainbow');
 
@@ -237,41 +169,12 @@ var SimpleGame = (function () {
         }
     };
 
-    /*SimpleGame.prototype.addBalls=function(){
-
-        var randomNumber= new RandomDataGenerator([0,1,2,3]);
-        this.greenBall=sceneObstacles.create(150,0,'balls',randomNumber);
-        this.greenBall.scale.x=0.5;
-        this.greenBall.scale.y=0.5;
-    };*/
    
-
     return SimpleGame;
 })();
 
-/*var addOneBall= function(x, y,pipe) {  
-    // Get the first dead pipe of our group
-    //var pipe = pipes.getFirstDead();
-
-    // Set the new position of the pipe
-    pipe.reset(x, y);
-
-    // Add velocity to the pipe to make it move left
-    pipe.body.velocity.x = -200; 
-
-    // Kill the pipe when it's no longer visible 
-    pipe.checkWorldBounds = true;
-    pipe.outOfBoundsKill = true;
-    };*/
 
 var addBalls= function() {  
-     // var pipe;        
-    //var pipes=this.pipes;
-    //pipe.reset(0, 0);
-    // Add the 6 pipes 
-    //if(this.obstacleCount < 50 )
-    //{
-
      //Adding red balls   
      for (var i = 0; i < 1; i++)
      {
@@ -283,8 +186,6 @@ var addBalls= function() {
         var randomNumber = Math.floor(Math.random() * 120) ; 
         ball.reset(1300+randomNumber,randomNumber+200);
         ball.body.velocity.x=-300;    
-        //ball.body.colliderWorldBounds = true;    
-        //this.obstacleCount+=1;
 
       }       
 
@@ -301,10 +202,8 @@ var addBalls= function() {
         //obstacleBall.body.colliderWorldBounds = true;    
         
     }
-    //}//this.score += 1;  
-    //this.labelScore.text = this.score; 
 
-    };
+};
 
 var restartGame=function(truck,score,labelScore){
 //Show score and restart
