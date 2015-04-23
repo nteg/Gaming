@@ -8,24 +8,25 @@ var SimpleGame = (function () {
         this.game.load.image('sky', 'assets/sky.png');
         this.game.load.atlasXML('scenery', 'assets/bgElements_spritesheet.png', 'assets/bgElements_spritesheet.xml');
         this.game.load.spritesheet('frontMountain', 'assets/frontMountain.png');
-        this.game.load.atlasXML('cars', 'assets/sheet_allCars.png', 'assets/sheet_allCars.xml');
-        this.game.load.spritesheet('road', 'assets/newRoad.png');
-        
-        this.game.load.spritesheet('balls','assets/balls_spritesheet.png',259,259,4);
-        //this.game.load.atlasXML('city','assets/cityTiles_sheet.png','assets/cityTiles_sheet.xml');
-        //this.game.load.image('block','assets/block.png');
+        //this.game.load.atlasXML('cars', 'assets/sheet_allCars.png', 'assets/sheet_allCars.xml');
+        this.game.load.atlasXML('cars', 'assets/monsterTruck.png', 'assets/monsterTruck.xml');
+        this.game.load.spritesheet('road', 'assets/road.png');
+		this.game.load.spritesheet('balls','assets/balls_spritesheet.png',259,259,4);
+		
+        this.game.load.audio('jumpSound', ['assets/GU-StealDaisy.mp3', 'assets/GU-StealDaisy.ogg']);
     };
 
     SimpleGame.prototype.create = function () {
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+        this.jumpSound = this.game.add.audio('jumpSound');
+
         this.background = this.game.add.sprite(0,0,'sky');
         //this.background.tint = 16711680;
-        
-        this.score = 0;  
-        this.labelScore = this.game.add.text(10, 10, "0", { font: "30px Arial", fill: "#ffffff" });      
-      
+		
+		this.score = 0;  
+        this.labelScore = this.game.add.text(10, 10, "0", { font: "30px Arial", fill: "#ffffff" });
 
         /*
         55  -   SUN
@@ -43,7 +44,6 @@ var SimpleGame = (function () {
         
         var sceneFrames = [55, 24, 38, 37, 78, 82, 50, 35, 88, 91, 92,];
 
-
         sceneActors = this.game.add.group();
         sceneActors.enableBody = true;
         sceneActors.physicsBodyType = Phaser.Physics.ARCADE;
@@ -54,49 +54,50 @@ var SimpleGame = (function () {
         //this.game.physics.arcade.enable(sunObj);
         this.sunObj.body.velocity.x = 10;
 
-        clouds = this.game.add.tileSprite(0, 70, 1399, 206, 'scenery', sceneFrames[1], sceneActors);
+        clouds = this.game.add.tileSprite(0, 90, 1349, 206, 'scenery', sceneFrames[1], sceneActors);
         clouds.scale.y = 1.5;
         clouds.autoScroll(-50,0);
 
-        backMountains = this.game.add.tileSprite(0, 310, 1399, 128, 'scenery', sceneFrames[2], sceneActors);
+        backMountains = this.game.add.tileSprite(0, 330, 1349, 128, 'scenery', sceneFrames[2], sceneActors);
         backMountains.autoScroll(-150,0);
 
-        this.smallStick = sceneActors.create(520, 285, 'scenery', sceneFrames[4], sceneActors);
+        this.smallStick = sceneActors.create(520, 305, 'scenery', sceneFrames[4], sceneActors);
         this.smallStick.body.velocity.x = -150;
         this.smallStick.scale.x = 0.2;
         this.smallStick.scale.y = 0.2;
 
-        this.bigStick = sceneActors.create(540, 260, 'scenery', sceneFrames[4], sceneActors);
+        this.bigStick = sceneActors.create(540, 280, 'scenery', sceneFrames[4], sceneActors);
         this.bigStick.body.velocity.x = -150;
         this.bigStick.scale.x = 0.2;
         this.bigStick.scale.y = 0.3;
 
-        this.birch = sceneActors.create(1170, 260, 'scenery', sceneFrames[5], sceneActors);
+        this.birch = sceneActors.create(1170, 280, 'scenery', sceneFrames[5], sceneActors);
         this.birch.body.velocity.x = -150;
         this.birch.scale.x = 0.4;
         this.birch.scale.y = 0.3;
 
-        this.bluePeak = sceneActors.create(1085, 270, 'scenery', sceneFrames[6], sceneActors);
+        this.bluePeak = sceneActors.create(1085, 290, 'scenery', sceneFrames[6], sceneActors);
         this.bluePeak.body.velocity.x = -150;
         this.bluePeak.scale.x = 0.4;
         this.bluePeak.scale.y = 0.3;
 
         //this.game.tileSprite(50, 300, 59, 285, 'scenery', sceneFrames[4]);
 
-        this.frontMountains = this.game.add.tileSprite(0, 310, 1399, 250, 'frontMountain', sceneActors);
+        this.frontMountains = this.game.add.tileSprite(0, 330, 1349, 250, 'frontMountain', sceneActors);
         this.frontMountains.autoScroll(-200,0);
         
-        this.road = this.game.add.tileSprite(0, 480, 1399, 120, 'road', sceneActors);
+        this.road = this.game.add.tileSprite(0, 470, 1349, 150, 'road', sceneActors);
         this.road.autoScroll(-250,0);
         
-        this.truck = this.game.add.sprite(0, 0, 'cars', 392);
-        this.truck.scale.x = 3;
-        this.truck.scale.y = 2;
-        this.truck.animations.add('rainbow', [105, 204, 300, 392, 489], 1, true);
+        this.truck = this.game.add.sprite(0, 0, 'cars');
+        this.truck.scale.x = .3;
+        this.truck.scale.y = .3;
+        //this.truck.animations.add('rainbow', [105, 204, 300, 392, 489], 1, true);
+        this.truck.animations.add('rainbow', [0, 1, 2, 3, 4, 5, 6, 7, 8], 0.5, true);
+
         this.game.physics.arcade.enable([this.road, this.truck]);
         
-        
-        this.road.body.setSize(1399, 120, 0, 60);
+        this.road.body.setSize(1349, 100, 0, 60);
         this.road.body.immovable = true;
         this.road.body.allowGravity = false;
 
@@ -105,11 +106,7 @@ var SimpleGame = (function () {
         this.truck.body.velocity.x = 10;
         this.truck.body.maxVelocity.x = 100;
         this.truck.body.colliderWorldBounds = true;
-        
-
-
-
-        this.yellowBalls=this.game.add.group();
+		this.yellowBalls=this.game.add.group();
         this.yellowBalls.enableBody=true;
         this.yellowBalls.createMultiple(2000,'balls',0);
         
@@ -118,22 +115,23 @@ var SimpleGame = (function () {
         this.redBalls.enableBody=true; //Add physics to the group
         this.redBalls.createMultiple(2000,'balls',1);
 
-        this.timer = this.game.time.events.loop(1000,addBalls,this);  
-
+        this.timer = this.game.time.events.loop(1000,addBalls,this);
 
         cursors = this.game.input.keyboard.createCursorKeys();
     };
 
     SimpleGame.prototype.update = function () {
-       
-        this.game.physics.arcade.collide(this.road, this.truck);        
-        this.game.physics.arcade.collide(this.road,this.yellowBalls);
+        
+        this.game.physics.arcade.collide(this.road, this.truck);
+		
+		this.game.physics.arcade.collide(this.road,this.yellowBalls);
+
         this.game.physics.arcade.collide(this.road,this.redBalls);
 
         //this.game.physics.arcade.overlap(this.yellowBalls,this.truck, restartGame,null,this);
         this.game.physics.arcade.overlap(this.redBalls,this.truck, collectBalls,null,this);
 
-        //this.truck.animations.play('rainbow');
+        this.truck.animations.play('rainbow');
 
         if(this.sunObj.x > 1310){
             this.sunObj.x = -65;
@@ -155,24 +153,23 @@ var SimpleGame = (function () {
                 this.truck.body.velocity.x = 0;
         }
         else if (cursors.right.isDown) {
-            this.truck.body.velocity.x = 450;
+            this.truck.body.velocity.x = 350;
         }
         else if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-            if(this.truck.body.y == 488) {
+            if(this.truck.body.y == 407.3) {
+                
                 this.truck.body.velocity.y = -500;
+                this.jumpSound.play();
             }
         }
-
-        if(this.truck.inWorld==false)
+		if(this.truck.inWorld==false)
         {
             restartGame(this.truck,this.score,this.labelScore);
         }
     };
 
-   
     return SimpleGame;
 })();
-
 
 var addBalls= function() {  
      //Adding red balls   
@@ -219,12 +216,17 @@ var resetBody = function (obj, parentSpeed) {
     obj.x = parentSpeed * 10;
 };
 
+
 var collectBalls=function(truck,redBall){        
         redBall.kill();
         
         this.score += 1;  
         this.labelScore.text = this.score;
     };
+var resetBody = function (obj, parentSpeed) {
+    obj.x = parentSpeed * 10;
+}
+
 window.onload = function () {
     var game = new SimpleGame();
 };
