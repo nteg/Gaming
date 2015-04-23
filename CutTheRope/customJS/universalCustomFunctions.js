@@ -22,7 +22,11 @@ function createAnimation(game,screenPositionX, screenPositionY, imageIdentifier)
     var animationObject = game.add.sprite(screenPositionX, screenPositionY, imageIdentifier);
      animationObject.anchor.setTo(0.5, 0.5);
     animationObject.enableBody = true;
-       game.physics.arcade.enableBody(animationObject);
+      // game.physics.arcade.enableBody(animationObject);
+    game.physics.p2.enable(animationObject);
+    animationObject.physicsBodyType = Phaser.Physics.P2JS;
+     animationObject.body.static = true;
+     animationObject.body.setCircle(32);
     return animationObject;
 }
 

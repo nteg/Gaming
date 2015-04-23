@@ -14,7 +14,11 @@ CutTheRope.level1 = function(game) {
     this.apple;
     this.apple1;
     this.ant;
-   
+    this.appleCG;
+     this.omnomCG;
+    this.bubbleCG;
+    this.antCG;
+    this.apple1CG;
 };
 
 
@@ -30,6 +34,12 @@ CutTheRope.level1.prototype = {
 
 	create: function () {
 		
+         this.physics.startSystem(Phaser.Physics.P2JS);
+          this.physics.p2.gravity.y = 200;
+        this.physics.p2.setImpactEvents(true);
+            this.physics.p2.restitution = 0.2;
+
+        
         this.omnom = buildOmnom(this,750,800,'omnom');
         this.omnom.frame = 0;
         
@@ -41,24 +51,54 @@ CutTheRope.level1.prototype = {
         
         this.bubble =  buildBubble(this,this.world.centerX,this.world.centerY, 'bubble');
        
+        
+           this.appleCG = this.physics.p2.createCollisionGroup();
+        this.omnomCG = this.physics.p2.createCollisionGroup();
+        this.bubbleCG = this.physics.p2.createCollisionGroup();
+         this.antCG = this.physics.p2.createCollisionGroup();
+         this.apple1CG = this.physics.p2.createCollisionGroup();
+         
+        
+       
+        this.physics.p2.updateBoundsCollisionGroup();
+        
+        this.apple.body.setCollisionGroup(this.appleCG);
+         this.omnom.body.setCollisionGroup(this.omnomCG);
+        this.ant.body.setCollisionGroup(this.antCG);
+        this.apple1.body.setCollisionGroup(this.appleCG);
        
     },
     
 
-    
+     omnomFruitCollision1: function(){    
+          omnomFruitCollision(this.apple,this.omnom);          
+},
+
   	update: function () {
          
 	   	this.ready = true;
-        this.physics.arcade.overlap(this.apple, this.omnom, omnomFruitCollision, null, this);
+        this.omnom.body.collides(this.appleCG);
+        this.apple.body.collides(this.omnomCG, this.omnomFruitCollision1,this);
+        
+        
+      //  this.apple.body.collides(this.omnomCG, omnomFruitCollision(this.apple,this.omnom), this);
+      //    this.ant.body.collides(this.appleCG);
+      //  this.apple1.body.collides(this.antCG, antFruitCollision, this);
+      //  
+      //  this.omnom.body.collides(this.apple, omnomFruitCollision, this);
+      //  this.apple.body.collides(this.omnom, omnomFruitCollision, this);
+        
+       /** this.physics.arcade.overlap(this.apple, this.omnom, omnomFruitCollision, null, this);
         this.physics.arcade.overlap(this.apple, this.bubble, bubbleCollisionWithAnObject, null, this);
          this.physics.arcade.overlap(this.apple1, this.ant, antFruitCollision, null, this);
         
+       
          this.apple.body.maxVelocity.y = 130;
         if(!this.bubble.exists){
           
             this.apple.body.acceleration.y= 100;
         }
-        
+         */
 	}
 };
 

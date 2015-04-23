@@ -49,8 +49,12 @@ function buildBubble(game,screenPositionX, screenPositionY, imageIdentifier){
     var bubble = game.add.sprite(screenPositionX,screenPositionY, imageIdentifier);
     bubble.scale.setTo(3,3);
     bubble.anchor.setTo(0.5,0.5);
+  
     bubble.enableBody = true;
-    game.physics.arcade.enableBody(bubble);
+     
+ //   game.physics.arcade.enableBody(bubble);
+     game.physics.p2.enable(bubble);
+     bubble.body.static = true;
     bubble.inputEnabled = true;
     bubble.events.onInputDown.addOnce(function(){bubble.kill();},this);
     return bubble;
@@ -72,14 +76,18 @@ function buildFruit(game,screenPositionX, screenPositionY, imageIdentifier){
    
     fruit.anchor.setTo(0.5,0.5);
     fruit.enableBody = true;
-    game.physics.arcade.enableBody(fruit);
+  //  game.physics.arcade.enableBody(fruit);
+    game.physics.p2.enable(fruit);
     fruit.frame = game.rnd.integerInRange(0,2);
-    fruit.body.acceleration.y= 100;
+    fruit.physicsBodyType = Phaser.Physics.P2JS;
+     fruit.body.setCircle(22);
+ //   fruit.body.acceleration.y= 100;
     return fruit;
 }
 
 function omnomFruitCollision(fruit,omnom){
         if(fruit.exists){
+            
             omnom.animations.play('eat');
             omnom.events.onAnimationComplete.add(function(){
                 fruit.kill();
