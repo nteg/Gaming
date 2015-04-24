@@ -121,9 +121,7 @@ CutTheRope.test.prototype = {
             this.apple.body.acceleration.y= 100;
         }
         */
-        if(!this.apple.exists){
-            this.state.start('menu');
-        }
+    
 	}
 };
 

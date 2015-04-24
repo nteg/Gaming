@@ -68,10 +68,6 @@ CutTheRope.level2.prototype = {
    update: function () {
          
 	   	this.ready = true;
-        
-        if(!this.apple.exists){
-            this.state.start('menu');
-        }
    	}
 };
 
