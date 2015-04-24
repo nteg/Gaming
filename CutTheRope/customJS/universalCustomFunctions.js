@@ -25,7 +25,7 @@ function createAnimation(game,screenPositionX, screenPositionY, imageIdentifier)
       // game.physics.arcade.enableBody(animationObject);
     game.physics.p2.enable(animationObject);
     animationObject.physicsBodyType = Phaser.Physics.P2JS;
-     animationObject.body.static = true;
+   //  animationObject.body.static = true;
      animationObject.body.setCircle(32);
     return animationObject;
 }
@@ -40,6 +40,32 @@ function addAnimation(game,animationObject, animationIdentifier, animationStartA
     }
     return animationObject;
 }
+
+//collision in p2 physics related function
+
+function setCollisions (game,obj1, obj2, callback)
+{
+    var obj1CollisionGroup, obj2CollisionGroup;
+    
+    if( !obj1.body.hasCollisionGroup){
+        obj1CollisionGroup = game.physics.p2.createCollisionGroup();
+        obj1.body.setCollisionGroup(obj1CollisionGroup);
+    }
+     if( !obj2.body.hasCollisionGroup){
+        obj2CollisionGroup = game.physics.p2.createCollisionGroup();
+          obj2.body.setCollisionGroup(obj2CollisionGroup);
+    }
+    // obj1CollisionGroup = game.physics.p2.createCollisionGroup(),
+     //   obj2CollisionGroup = game.physics.p2.createCollisionGroup();
+    // obj1.body.setCollisionGroup(obj1CollisionGroup);
+    // obj2.body.setCollisionGroup(obj2CollisionGroup);
+    
+     game.physics.p2.updateBoundsCollisionGroup();
+    obj1.body.collides([obj2CollisionGroup]);
+    obj2.body.collides(obj1CollisionGroup, callback, this);
+}
+
+
 
 
 function resizeGame(game) {

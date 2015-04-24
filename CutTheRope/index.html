@@ -11,6 +11,9 @@
     <script src="customJS/universalCustomFunctions.js"></script>
     <script src="customJS/systemObjects.js"></script>
     <script src="customJS/level1.js"></script>
+     <script src="customJS/level2.js"></script>
+    <script src="customJS/test.js"></script>
+     <script src="customJS/menu.js"></script>
 	<style>
 		body {
 			padding: 0;
@@ -29,6 +32,9 @@
             game.state.add('Boot',CutTheRope.Boot);
             game.state.add('Preloader',CutTheRope.Preloader);
             game.state.add('level1',CutTheRope.level1);
+             game.state.add('level2',CutTheRope.level2);
+            game.state.add('test',CutTheRope.test);
+             game.state.add('menu',CutTheRope.menu);
             game.state.start('Boot');
            
         }

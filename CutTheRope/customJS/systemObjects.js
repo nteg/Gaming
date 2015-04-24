@@ -32,6 +32,16 @@ function buildOmnom(game,screenPositionX, screenPositionY, imageIdentifier) {
     
 }
 
+//game base related functions
+function buildBase(game,screenPositionX, screenPositionY, imageIdentifier){
+    var base = game.add.sprite(screenPositionX,screenPositionY, imageIdentifier);
+    base.enableBody = true;
+    game.physics.p2.enable(base);
+    base.physicsBodyType = Phaser.Physics.P2JS;
+    base.body.static = true;
+    return base;
+}
+
 //game ant related functions
 function buildAnt(game,screenPositionX, screenPositionY, imageIdentifier) {
     
@@ -51,23 +61,24 @@ function buildBubble(game,screenPositionX, screenPositionY, imageIdentifier){
     bubble.anchor.setTo(0.5,0.5);
   
     bubble.enableBody = true;
-     
+    
  //   game.physics.arcade.enableBody(bubble);
      game.physics.p2.enable(bubble);
-     bubble.body.static = true;
+   //  bubble.body.static = true;
+     bubble.body.data.gravityScale=0;
     bubble.inputEnabled = true;
-    bubble.events.onInputDown.addOnce(function(){bubble.kill();},this);
+    bubble.body.setCircle(2);
+    bubble.events.onInputDown.addOnce(function(){
+        bubble.kill();
+    },this);
     return bubble;
 
 }
 
 function bubbleCollisionWithAnObject(collisionObject, bubble){
        if(bubble.exists){
-        bubble.x = collisionObject.x;
-        bubble.y = collisionObject.y;
-        collisionObject.body.acceleration.y= -50;
-       }
-       
+           bubble.body.data.gravityScale=-2;     
+       }      
     }
 
 //game fruit related functions
@@ -109,3 +120,5 @@ function antFruitCollision(fruit,ant){
             
         }
 }
+
+

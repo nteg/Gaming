@@ -8,6 +8,11 @@ CutTheRope.Preloader.prototype = {
 	preload: function () {
 		this.load.image('preloadBar','images/loader_bar.png');
         this.load.image('titleimage','images/TitleImage.png');
+         this.load.image('greenBackground','images/greenBackground.jpeg');
+        this.load.image('candyBackground','images/candyBackground.png');
+         this.load.image('stepBackground','images/stepBackground.png');
+         this.load.image('blueBackground','images/blueBackground.jpeg');
+         this.load.image('base','images/base.png');
       
         this.load.atlasXML('bunny', 'images/spritesheets/bunny.png', 'images/spritesheets/bunny.xml'); 
        // this.load.spritesheet('bunny', 'images/spritesheets/bunny.png', 63,68); 
@@ -27,6 +32,6 @@ CutTheRope.Preloader.prototype = {
 
 	update: function () {
 	   	this.ready = true;
-        this.state.start('level1');
+        this.state.start('menu');
 	}
 };
