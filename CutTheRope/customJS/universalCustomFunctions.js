@@ -26,7 +26,7 @@ function createAnimation(game,screenPositionX, screenPositionY, imageIdentifier)
     game.physics.p2.enable(animationObject);
     animationObject.physicsBodyType = Phaser.Physics.P2JS;
    //  animationObject.body.static = true;
-     animationObject.body.setCircle(32);
+     
     return animationObject;
 }
 

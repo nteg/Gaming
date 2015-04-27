@@ -13,6 +13,10 @@ CutTheRope.Preloader.prototype = {
          this.load.image('stepBackground','images/stepBackground.png');
          this.load.image('blueBackground','images/blueBackground.jpeg');
          this.load.image('base','images/base.png');
+        
+                this.load.image('bead', 'images/origional/obj_pollen_hd.png');
+        this.load.image('duck', 'images/phaser/darkwing_crazy.png');
+        this.load.image('orb', 'images/phaser/orb-blue.png');
       
         this.load.atlasXML('bunny', 'images/spritesheets/bunny.png', 'images/spritesheets/bunny.xml'); 
        // this.load.spritesheet('bunny', 'images/spritesheets/bunny.png', 63,68); 
@@ -21,7 +25,7 @@ CutTheRope.Preloader.prototype = {
         this.load.spritesheet('omnom', 'images/spritesheets/omnom-eat.png', 157, 162);
         this.load.spritesheet('ant', 'images/spritesheets/ant.png', 47, 23);
          this.load.spritesheet('bubble','images/bubble.png',34,34);
-          this.load.spritesheet('apples','images/spritesheets/apples.png',82,82);
+          this.load.spritesheet('apples','images/spritesheets/apples.png',83,82);
         
      
 	},

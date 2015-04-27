@@ -101,7 +101,7 @@ CutTheRope.test.prototype = {
        
        
        this.bubble.body.collides(this.appleCG);
-        this.apple.body.collides(this.bubbleCG, function(){bubbleCollisionWithAnObject(this.apple,this.bubble);},this);
+        this.apple.body.collides(this.bubbleCG, function(){bubbleCollisionWithAnObject(this.apple,this.bubble,this);},this);
        
       //  this.apple.body.collides(this.omnomCG, omnomFruitCollision(this.apple,this.omnom), this);
       //    this.ant.body.collides(this.appleCG);

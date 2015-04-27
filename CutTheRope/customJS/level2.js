@@ -11,6 +11,8 @@ CutTheRope.level2 = function(game) {
     this.bubble;
  this.bubbleCG;
     this.goToMainMenu;
+    this.peg;
+    this.rope;
 };
 
 
@@ -44,7 +46,9 @@ CutTheRope.level2.prototype = {
         this.omnom.body.collides(this.baseCG);
         this.base.body.collides(this.omnomCG);
         
+        this.peg = buildPeg(this,800, 100,'orb');
         
+        this.rope = buildRope(this,this.peg,this.apple,20);
         /**setCollisions (this,this.apple,this.base);
         setCollisions (this,this.omnom,this.base);
         setCollisions (this,this.omnom,this.apple,function(){omnomFruitCollision(this.apple,this.omnom);});
@@ -54,7 +58,7 @@ CutTheRope.level2.prototype = {
         this.bubbleCG = this.physics.p2.createCollisionGroup();
         this.bubble.body.setCollisionGroup(this.bubbleCG);
         this.bubble.body.collides(this.appleCG);
-        this.apple.body.collides(this.bubbleCG, function(){bubbleCollisionWithAnObject(this.apple,this.bubble);},this);
+        this.apple.body.collides(this.bubbleCG, function(){bubbleCollisionWithAnObject(this.apple,this.bubble,this);},this);
        
         this.goToMainMenu = this.add.bitmapText(1200, 100, 'eightbitwonder', 'Exit', 50);
          this.goToMainMenu.inputEnabled = true;
@@ -68,6 +72,8 @@ CutTheRope.level2.prototype = {
    update: function () {
          
 	   	this.ready = true;
+       breakRope(this);
+     
    	}
 };
 

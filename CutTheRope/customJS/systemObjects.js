@@ -28,6 +28,9 @@ function buildOmnom(game,screenPositionX, screenPositionY, imageIdentifier) {
     
     var omnom = createAnimation(game,screenPositionX, screenPositionY, imageIdentifier);
     omnom = addAnimation(game,omnom, 'eat',0,5 , 10, false );
+    omnom.body.mass = 10;
+ //   omnom.body.fixedRotation = true
+    omnom.body.setRectangle(100, 10);
     return omnom;
     
 }
@@ -75,17 +78,22 @@ function buildBubble(game,screenPositionX, screenPositionY, imageIdentifier){
 
 }
 
-function bubbleCollisionWithAnObject(collisionObject, bubble){
+function bubbleCollisionWithAnObject(collisionObject, bubble,game){
        if(bubble.exists){
-           bubble.body.data.gravityScale=-2;     
-       }      
+           bubble.body.data.gravityScale=-10;
+            game.physics.p2.createRevoluteConstraint(collisionObject, [collisionObject.width/2, 0], bubble, [bubble.width/2, 0], 2000);
+            collisionObject.x = bubble.x;
+           collisionObject.y = bubble.y;
+           
+       }  
+   
     }
 
 //game fruit related functions
 function buildFruit(game,screenPositionX, screenPositionY, imageIdentifier){
     var fruit = game.add.sprite(screenPositionX,screenPositionY, imageIdentifier);
    
-    fruit.anchor.setTo(0.5,0.5);
+    fruit.anchor.setTo(0.3,0.2);
     fruit.enableBody = true;
   //  game.physics.arcade.enableBody(fruit);
     game.physics.p2.enable(fruit);
@@ -93,6 +101,7 @@ function buildFruit(game,screenPositionX, screenPositionY, imageIdentifier){
     fruit.physicsBodyType = Phaser.Physics.P2JS;
      fruit.body.setCircle(22);
  //   fruit.body.acceleration.y= 100;
+    fruit.body.mass = 1;
     return fruit;
 }
 
@@ -121,4 +130,59 @@ function antFruitCollision(fruit,ant){
         }
 }
 
+function buildPeg(game,screenPositionX, screenPositionY, imageIdentifier){
+    var peg = game.add.sprite(screenPositionX, screenPositionY, imageIdentifier);
+    game.physics.p2.enable(peg);
+    //peg.body.setRectangle(22, 22);
+    peg.body.setCircle(22);
+    peg.body.static = true;
+    return peg;
+}
 
+function buildRope(game,obj1,obj2,ropeLength){
+    var rope ={ 
+        IS_MOUSE_HELD : false,
+        beads:game.add.group(), 
+        myRevoluteConst: []};
+    var width = 16;
+    var maxForce = 2000; //  The force that holds the rectangles together.
+    rope.beads = game.add.group();   
+    for (var i = 0; i <= ropeLength; i++) {
+        x = obj1.x+ (i * width);     //  Every new rect is positioned below the last
+        y = obj1.y ;     //  All rects are on the same y position
+        var newBead = rope.beads.create(x, y, 'bead');
+        //  Enable physicsbody
+        game.physics.p2.enable(newBead);
+        //  Set custom circle
+        newBead.body.setCircle(width/2);
+        // newBead.inputEnabled = true;
+        if(i==0){
+            rope.myRevoluteConst.push( game.physics.p2.createRevoluteConstraint(newBead, [-width/2, 0], obj1, [obj1.width/2, 0], maxForce) );
+        }
+        else{
+            rope.myRevoluteConst.push( game.physics.p2.createRevoluteConstraint(newBead, [-width/2, 0], lastBead, [width/2, 0], maxForce) );
+        }
+        lastBead = newBead;
+ }
+        game.physics.p2.createRevoluteConstraint(obj2, [0, -25], rope.beads.children[rope.beads.children.length-1], [8, 0], 10000);
+        rope.beads.setAll('inputEnabled', true);
+        game.input.onDown.add(function(){rope.IS_MOUSE_HELD =true;}, this);
+        game.input.onUp.add(function(){IS_MOUSE_HELD =false;}, this);
+        return rope;
+}
+
+function breakRope(game){
+        if(game.rope.IS_MOUSE_HELD){
+            var length = game.rope.beads.length,
+                strike=false;
+            for(var i= 0; i<length; i++){
+                strike = game.rope.beads.children[i].input.checkPointerOver(game.input.mousePointer);
+                if(strike) {
+                    //breakRope(i);
+                    game.physics.p2.removeConstraint(game.rope.myRevoluteConst[i]);
+                    break;
+                }
+
+            }
+    }
+}

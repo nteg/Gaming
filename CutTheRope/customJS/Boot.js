@@ -26,6 +26,7 @@ CutTheRope.Boot.prototype = {
         this.physics.p2.gravity.y = 200;
         this.physics.p2.setImpactEvents(true);
         this.physics.p2.restitution = 0.2;
+         this.physics.p2.friction=10;
         
         this.state.start('Preloader');
     }
