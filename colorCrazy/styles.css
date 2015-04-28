@@ -8,7 +8,7 @@ body{
 }
 
 #controls{
-	top: 250px;
+	/*top: 250px;*/
 	text-align: center;
 	z-index: 100px;
 	position: relative;

@@ -1,4 +1,4 @@
-var ball;
+var balls = new Array();
 
 var SimpleGame = (function () {
     function SimpleGame() {
@@ -47,6 +47,8 @@ var SimpleGame = (function () {
         sceneActors = this.game.add.group();
         sceneActors.enableBody = true;
         sceneActors.physicsBodyType = Phaser.Physics.ARCADE;
+        sceneActors.setAll('outOfBoundsKill', true);
+
 
         this.sunObj = sceneActors.create(500, 80, 'scenery', sceneFrames[0]);
 
@@ -88,12 +90,24 @@ var SimpleGame = (function () {
         
         this.road = this.game.add.tileSprite(0, 470, 1349, 150, 'road', sceneActors);
         this.road.autoScroll(-250,0);
-        
+
         this.truck = this.game.add.sprite(0, 0, 'cars');
         this.truck.scale.x = .3;
         this.truck.scale.y = .3;
         //this.truck.animations.add('rainbow', [105, 204, 300, 392, 489], 1, true);
-        this.truck.animations.add('rainbow', [0, 1, 2, 3, 4, 5, 6, 7, 8], 0.5, true);
+        this.truck.animations.add('rainbow', [0, 1, 2, 3, 4, 5, 6, 7, 8], 0.1, true);
+
+        for(index = 0; index < 4; index++){
+            balls[index] = new Array();
+            balls[index] = this.game.add.group();
+            balls[index].enableBody = true;
+            balls[index].physicsBodyType = Phaser.Physics.ARCADE;
+            balls[index].createMultiple(1, 'balls', index);
+            balls[index].scale.x = 0.7;
+            balls[index].scale.y = 0.7;
+            balls[index].setAll('outOfBoundsKill', true);
+            balls[index].setAll('checkWorldBounds', true);
+        }
 
         this.game.physics.arcade.enable([this.road, this.truck]);
         
@@ -101,21 +115,13 @@ var SimpleGame = (function () {
         this.road.body.immovable = true;
         this.road.body.allowGravity = false;
 
+        this.truck.body.setSize(350, 400, 0, 0);
         this.truck.body.gravity.y = 800;
         this.truck.body.bounce.y = 0.4;
-        this.truck.body.velocity.x = 10;
+        this.truck.body.velocity.x = 50;
         this.truck.body.maxVelocity.x = 100;
-        this.truck.body.colliderWorldBounds = true;
-		this.yellowBalls=this.game.add.group();
-        this.yellowBalls.enableBody=true;
-        this.yellowBalls.createMultiple(2000,'balls',0);
-        
-
-        this.redBalls=this.game.add.group(); //create a group
-        this.redBalls.enableBody=true; //Add physics to the group
-        this.redBalls.createMultiple(2000,'balls',1);
-
-        this.timer = this.game.time.events.loop(1000,addBalls,this);
+		
+        // this.firstBall.body.velocity.x = -250;
 
         cursors = this.game.input.keyboard.createCursorKeys();
     };
@@ -123,13 +129,7 @@ var SimpleGame = (function () {
     SimpleGame.prototype.update = function () {
         
         this.game.physics.arcade.collide(this.road, this.truck);
-		
-		this.game.physics.arcade.collide(this.road,this.yellowBalls);
-
-        this.game.physics.arcade.collide(this.road,this.redBalls);
-
-        //this.game.physics.arcade.overlap(this.yellowBalls,this.truck, restartGame,null,this);
-        this.game.physics.arcade.overlap(this.redBalls,this.truck, collectBalls,null,this);
+        this.game.physics.arcade.collide(balls, this.truck);
 
         this.truck.animations.play('rainbow');
 
@@ -156,51 +156,34 @@ var SimpleGame = (function () {
             this.truck.body.velocity.x = 350;
         }
         else if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-            if(this.truck.body.y == 407.3) {
+            if(this.truck.body.y == 410) {
                 
                 this.truck.body.velocity.y = -500;
                 this.jumpSound.play();
             }
         }
+
 		if(this.truck.inWorld==false)
         {
             restartGame(this.truck,this.score,this.labelScore);
+        }
+
+        for (index = 0; index < 4; index++){
+            
+            //  Grab the first bullet we can from the pool
+            ball = balls[index].getFirstExists(false);
+
+            if (ball)
+            {
+                ball.reset(1361 + ((index+1) * 550), 570);
+                ball.body.velocity.x = -250;
+                ball.body.immovable = true;
+            }
         }
     };
 
     return SimpleGame;
 })();
-
-var addBalls= function() {  
-     //Adding red balls   
-     for (var i = 0; i < 1; i++)
-     {
-        ball=this.redBalls.getFirstDead();
-        ball.body.gravity.y=200;
-        ball.body.bounce.y=0.4;
-        ball.scale.setTo(0.3,0.3);
-
-        var randomNumber = Math.floor(Math.random() * 120) ; 
-        ball.reset(1300+randomNumber,randomNumber+200);
-        ball.body.velocity.x=-300;    
-
-      }       
-
-    //Adding yellow balls
-    for(var j=0;j<1;j++)
-    {
-        var randomNumber=Math.floor(Math.random() * 50);
-        obstacleBall=this.yellowBalls.getFirstDead();
-        obstacleBall.body.gravity.y=100;
-        obstacleBall.body.bounce.y=0.5;
-        obstacleBall.scale.setTo(0.3,0.3);
-        obstacleBall.reset(1300+randomNumber,randomNumber+50);
-        obstacleBall.body.velocity.x=-350;    
-        //obstacleBall.body.colliderWorldBounds = true;    
-        
-    }
-
-};
 
 var restartGame=function(truck,score,labelScore){
 //Show score and restart
@@ -212,17 +195,6 @@ var restartGame=function(truck,score,labelScore){
 
 };
 
-var resetBody = function (obj, parentSpeed) {
-    obj.x = parentSpeed * 10;
-};
-
-
-var collectBalls=function(truck,redBall){        
-        redBall.kill();
-        
-        this.score += 1;  
-        this.labelScore.text = this.score;
-    };
 var resetBody = function (obj, parentSpeed) {
     obj.x = parentSpeed * 10;
 }
