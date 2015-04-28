@@ -15,6 +15,11 @@ function buildMonster(game,screenPositionX, screenPositionY, imageIdentifier, st
         
     }
 
+/**
+to use we have to write code in any level
+   this.dude = buildDude(this,100,100,'dude');
+        this.dude.animations.play('left');
+*/
 function buildDude(game,screenPositionX, screenPositionY, imageIdentifier) {
     
     var dude = createAnimation(game,screenPositionX, screenPositionY, imageIdentifier);
@@ -28,9 +33,9 @@ function buildOmnom(game,screenPositionX, screenPositionY, imageIdentifier) {
     
     var omnom = createAnimation(game,screenPositionX, screenPositionY, imageIdentifier);
     omnom = addAnimation(game,omnom, 'eat',0,5 , 10, false );
-    omnom.body.mass = 10;
+    omnom.body.mass = 50;
  //   omnom.body.fixedRotation = true
-    omnom.body.setRectangle(100, 10);
+    omnom.body.setRectangle(200, 10);
     return omnom;
     
 }
@@ -70,18 +75,16 @@ function buildBubble(game,screenPositionX, screenPositionY, imageIdentifier){
    //  bubble.body.static = true;
      bubble.body.data.gravityScale=0;
     bubble.inputEnabled = true;
-    bubble.body.setCircle(2);
-    bubble.events.onInputDown.addOnce(function(){
-        bubble.kill();
-    },this);
+    bubble.body.setCircle(20);
+    
     return bubble;
 
 }
 
-function bubbleCollisionWithAnObject(collisionObject, bubble,game){
+function bubbleCollisionWithAnObject(game,collisionObject, bubble){
        if(bubble.exists){
            bubble.body.data.gravityScale=-10;
-            game.physics.p2.createRevoluteConstraint(collisionObject, [collisionObject.width/2, 0], bubble, [bubble.width/2, 0], 2000);
+          game.bubble.bubbleRevoluteConstraint =  game.physics.p2.createRevoluteConstraint(collisionObject, [collisionObject.width/2, 0], bubble, [bubble.width/2, 0], 2000);
             collisionObject.x = bubble.x;
            collisionObject.y = bubble.y;
            
@@ -105,9 +108,9 @@ function buildFruit(game,screenPositionX, screenPositionY, imageIdentifier){
     return fruit;
 }
 
-function omnomFruitCollision(fruit,omnom){
+function omnomFruitCollision(game,fruit,omnom){
         if(fruit.exists){
-            
+             game.physics.p2.createRevoluteConstraint(fruit, [fruit.width/2, 0], omnom, [omnom.width/2, 0], 2000);
             omnom.animations.play('eat');
             omnom.events.onAnimationComplete.add(function(){
                 fruit.kill();
@@ -185,4 +188,11 @@ function breakRope(game){
 
             }
     }
+}
+
+function breakBubble(game){
+    game.bubble.events.onInputDown.addOnce(function(){
+            game.physics.p2.removeConstraint(game.bubble.bubbleRevoluteConstraint);
+            game.bubble.kill();
+    },game);
 }

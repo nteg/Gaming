@@ -68,7 +68,7 @@ CutTheRope.menu.prototype = {
          
 	   	this.ready = true;
         this.omnom.body.collides(this.appleCG);
-        this.apple.body.collides(this.omnomCG, function(){omnomFruitCollision(this.apple,this.omnom);},this);
+        this.apple.body.collides(this.omnomCG, function(){omnomFruitCollision(this,this.apple,this.omnom);},this);
         this.omnom.body.collides(this.baseCG);
         this.base.body.collides(this.omnomCG);
        

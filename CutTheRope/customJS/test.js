@@ -23,6 +23,7 @@ CutTheRope.test = function(game) {
     this.background;
     this.base;
     this.goToMainMenu;
+    this.dude;
     
 };
 
@@ -32,17 +33,14 @@ CutTheRope.test.prototype = {
 	
 	preload: function () {
 		 
-       
-        this.titleText = this.add.bitmapText(70, 70, 'eightbitwonder', 'Cut The Rope', 34);
-         
+             
 	},
 
 	create: function () {
 		
          this.physics.startSystem(Phaser.Physics.P2JS);
-          this.physics.p2.gravity.y = 200;
-        this.physics.p2.setImpactEvents(true);
-            this.physics.p2.restitution = 0.2;
+          
+       
         
        this.background = this.add.image(0,0, 'greenBackground');
         this.background.scale.setTo(4,3);
@@ -87,6 +85,11 @@ CutTheRope.test.prototype = {
         this.goToMainMenu.events.onInputDown.addOnce(function(){
            this.state.start('menu');
         },this);
+        
+        
+         
+        
+     
     },
     
 
@@ -94,14 +97,15 @@ CutTheRope.test.prototype = {
          
 	   	this.ready = true;
         this.omnom.body.collides(this.appleCG);
-        this.apple.body.collides(this.omnomCG, function(){omnomFruitCollision(this.apple,this.omnom);},this);
+        this.apple.body.collides(this.omnomCG, function(){omnomFruitCollision(this,this.apple,this.omnom);},this);
         
          this.omnom.body.collides(this.baseCG);
        this.base.body.collides(this.omnomCG);
        
        
        this.bubble.body.collides(this.appleCG);
-        this.apple.body.collides(this.bubbleCG, function(){bubbleCollisionWithAnObject(this.apple,this.bubble,this);},this);
+        this.apple.body.collides(this.bubbleCG, function(){bubbleCollisionWithAnObject(this,this.apple,this.bubble);},this);
+       breakBubble(this);
        
       //  this.apple.body.collides(this.omnomCG, omnomFruitCollision(this.apple,this.omnom), this);
       //    this.ant.body.collides(this.appleCG);

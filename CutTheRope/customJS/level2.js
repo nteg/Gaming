@@ -13,6 +13,7 @@ CutTheRope.level2 = function(game) {
     this.goToMainMenu;
     this.peg;
     this.rope;
+  
 };
 
 
@@ -27,6 +28,7 @@ CutTheRope.level2.prototype = {
          
         
         this.physics.startSystem(Phaser.Physics.P2JS);
+         
         this.background = this.add.image(0,0, 'greenBackground');
         this.background.scale.setTo(4,3);
         
@@ -42,26 +44,22 @@ CutTheRope.level2.prototype = {
         this.omnom.body.setCollisionGroup(this.omnomCG);
         this.base.body.setCollisionGroup(this.baseCG);
         this.omnom.body.collides(this.appleCG);
-        this.apple.body.collides(this.omnomCG, function(){omnomFruitCollision(this.apple,this.omnom);},this);
+        this.apple.body.collides(this.omnomCG, function(){omnomFruitCollision(this,this.apple,this.omnom);},this);
         this.omnom.body.collides(this.baseCG);
         this.base.body.collides(this.omnomCG);
         
         this.peg = buildPeg(this,800, 100,'orb');
         
-        this.rope = buildRope(this,this.peg,this.apple,20);
-        /**setCollisions (this,this.apple,this.base);
-        setCollisions (this,this.omnom,this.base);
-        setCollisions (this,this.omnom,this.apple,function(){omnomFruitCollision(this.apple,this.omnom);});
-        */
-        
+        this.rope = buildRope(this,this.peg,this.apple,21);
+             
         this.bubble =  buildBubble(this,this.world.centerX,this.world.centerY, 'bubble');
         this.bubbleCG = this.physics.p2.createCollisionGroup();
         this.bubble.body.setCollisionGroup(this.bubbleCG);
         this.bubble.body.collides(this.appleCG);
-        this.apple.body.collides(this.bubbleCG, function(){bubbleCollisionWithAnObject(this.apple,this.bubble,this);},this);
+        this.apple.body.collides(this.bubbleCG, function(){bubbleCollisionWithAnObject(this,this.apple,this.bubble,this);},this);
        
         this.goToMainMenu = this.add.bitmapText(1200, 100, 'eightbitwonder', 'Exit', 50);
-         this.goToMainMenu.inputEnabled = true;
+        this.goToMainMenu.inputEnabled = true;
    
         this.goToMainMenu.events.onInputDown.addOnce(function(){
            this.state.start('menu');
@@ -73,6 +71,9 @@ CutTheRope.level2.prototype = {
          
 	   	this.ready = true;
        breakRope(this);
+        
+       
+      breakBubble(this);
      
    	}
 };

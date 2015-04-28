@@ -23,7 +23,7 @@ CutTheRope.Boot.prototype = {
 		this.stage.backgroundColor = '#000';
         
          this.physics.startSystem(Phaser.Physics.P2JS);
-        this.physics.p2.gravity.y = 200;
+        this.physics.p2.gravity.y = 300;
         this.physics.p2.setImpactEvents(true);
         this.physics.p2.restitution = 0.2;
          this.physics.p2.friction=10;
