@@ -167,10 +167,10 @@ function buildRope(game,obj1,obj2,ropeLength){
         }
         lastBead = newBead;
  }
-        game.physics.p2.createRevoluteConstraint(obj2, [0, -25], rope.beads.children[rope.beads.children.length-1], [8, 0], 10000);
+        game.physics.p2.createRevoluteConstraint(obj2, [0, -40], rope.beads.children[rope.beads.children.length-1], [2, 0], maxForce);
         rope.beads.setAll('inputEnabled', true);
         game.input.onDown.add(function(){rope.IS_MOUSE_HELD =true;}, this);
-        game.input.onUp.add(function(){IS_MOUSE_HELD =false;}, this);
+        game.input.onUp.add(function(){rope.IS_MOUSE_HELD =false;}, this);
         return rope;
 }
 
@@ -193,6 +193,7 @@ function breakRope(game){
 function breakBubble(game){
     game.bubble.events.onInputDown.addOnce(function(){
             game.physics.p2.removeConstraint(game.bubble.bubbleRevoluteConstraint);
+       
             game.bubble.kill();
     },game);
 }

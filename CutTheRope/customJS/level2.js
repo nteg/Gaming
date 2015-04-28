@@ -8,6 +8,7 @@ CutTheRope.level2 = function(game) {
     this.baseCG;
     this.background;
     this.base; 
+    this.slide;
     this.bubble;
  this.bubbleCG;
     this.goToMainMenu;
@@ -33,6 +34,8 @@ CutTheRope.level2.prototype = {
         this.background.scale.setTo(4,3);
         
         this.base = buildBase(this,800,800, 'base');
+        this.slide = buildBase(this,200,200, 'base');
+        this.slide.body.rotation=-3.14/4;
         this.omnom = buildOmnom(this,750,600,'omnom');
         this.omnom.frame = 0;
         this.apple = buildFruit(this,this.world.centerX,this.world.centerY-220, 'apples');
