@@ -1,4 +1,4 @@
-CutTheRope.level2 = function(game) {
+CutTheRope.level3 = function(game) {
     this.titleText = null;
     this.scoreText = null;
     this.ready = false;
@@ -25,7 +25,7 @@ CutTheRope.level2 = function(game) {
 
 
 
-CutTheRope.level2.prototype = {
+CutTheRope.level3.prototype = {
 	
 	preload: function () {
         this.titleText = this.add.bitmapText(70, 70, 'eightbitwonder', 'Cut The Rope', 34);

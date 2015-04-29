@@ -8,6 +8,7 @@ CutTheRope.menu = function(game) {
     this.baseCG;
     this.background;
     this.base;  
+    this.stage = [];
     this.stage1= null;
     this.stage2= null;
     this.stage3= null;
@@ -20,19 +21,21 @@ CutTheRope.menu.prototype = {
 	preload: function () {
          this.background = this.add.image(0,0, 'stepBackground');
         this.background.scale.setTo(2,2);
-        this.titleText = this.add.bitmapText(70, 70, 'eightbitwonder', 'Cut The Rope', 100);
-        this.stage1 = this.add.bitmapText(800, 550, 'eightbitwonder', 'Level1', 50);
-        this.stage2 = this.add.bitmapText(650, 430, 'eightbitwonder', 'Level2', 50);
-        this.stage3 = this.add.bitmapText(400, 300, 'eightbitwonder', 'Level3', 50);
+        this.titleText = this.add.bitmapText(200, 70, 'eightbitwonder', 'Cut The Rope', 100);
+        this.stage[0] = this.add.bitmapText(800, 550, 'eightbitwonder', 'Level1', 50);
+        this.stage[1] = this.add.bitmapText(650, 430, 'eightbitwonder', 'Level2', 50);
+        this.stage[2] = this.add.bitmapText(400, 300, 'eightbitwonder', 'Level3', 50);
+        this.stage[3] = this.add.bitmapText(400, 600, 'eightbitwonder', 'test', 50);
     },
 
 	create: function () {
         this.physics.startSystem(Phaser.Physics.P2JS);
        
-        this.base = buildBase(this,1200,750, 'base');
+        this.base = buildSlide(this,1200,750, 'base');
          this.base.scale.setTo(.5,1);
         this.omnom = buildOmnom(this,1200,600,'omnom');
         this.omnom.frame = 0;
+       
       //  this.apple = buildFruit(this,1200,this.world.centerY-220, 'apples');
          this.apple = buildFruit(this,1200,this.world.centerY-220, 'apples');
             
@@ -46,19 +49,24 @@ CutTheRope.menu.prototype = {
         this.apple.body.setCollisionGroup(this.appleCG);
         
         
-        this.stage1.inputEnabled = true;
-        this.stage2.inputEnabled = true;
-        this.stage3.inputEnabled = true;
+        this.stage[0].inputEnabled = true;
+        this.stage[1].inputEnabled = true;
+        this.stage[2].inputEnabled = true;
+         this.stage[3].inputEnabled = true;
    
-        this.stage1.events.onInputDown.addOnce(function(){
+        this.stage[0].events.onInputDown.addOnce(function(){
            this.state.start('level1');
         },this);
         
-        this.stage2.events.onInputDown.addOnce(function(){
+        this.stage[1].events.onInputDown.addOnce(function(){
            this.state.start('level2');
         },this);
         
-        this.stage3.events.onInputDown.addOnce(function(){
+        this.stage[2].events.onInputDown.addOnce(function(){
+           this.state.start('level3');
+        },this);
+        
+        this.stage[3].events.onInputDown.addOnce(function(){
            this.state.start('test');
         },this);
      },

@@ -21,6 +21,7 @@ CutTheRope.Preloader.prototype = {
         this.load.atlasXML('bunny', 'images/spritesheets/bunny.png', 'images/spritesheets/bunny.xml'); 
        // this.load.spritesheet('bunny', 'images/spritesheets/bunny.png', 63,68); 
        this.load.spritesheet('dude', 'images/spritesheets/dude.png', 32, 48);
+        this.load.spritesheet('coin', 'images/spritesheets/coinSpriteSheet.png', 40, 44);
        // this.load.spritesheet('omnom', 'images/spritesheets/omnom.png', 135, 135); 
         this.load.spritesheet('omnom', 'images/spritesheets/omnom-eat.png', 157, 162);
         this.load.spritesheet('ant', 'images/spritesheets/ant.png', 47, 23);

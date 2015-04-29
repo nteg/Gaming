@@ -46,7 +46,7 @@ CutTheRope.test.prototype = {
         this.background.scale.setTo(4,3);
         
         
-         this.base = buildBase(this,800,800, 'base');
+         this.base = buildSlide(this,800,800, 'base');
         
         
         

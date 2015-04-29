@@ -29,6 +29,19 @@ function buildDude(game,screenPositionX, screenPositionY, imageIdentifier) {
     
 }
 
+function buildCoin(game,screenPositionX, screenPositionY, imageIdentifier) {
+    
+    var coin = createAnimation(game,screenPositionX, screenPositionY, imageIdentifier);
+    coin = addAnimation(game,coin, 'spin', 0, 3, 10, true );
+     coin.animations.play('spin');
+     coin.enableBody = true;
+    game.physics.p2.enable(coin);
+    coin.physicsBodyType = Phaser.Physics.P2JS;
+    coin.body.static = true;
+    return coin;
+    
+}
+
 function buildOmnom(game,screenPositionX, screenPositionY, imageIdentifier) {
     
     var omnom = createAnimation(game,screenPositionX, screenPositionY, imageIdentifier);
@@ -41,12 +54,14 @@ function buildOmnom(game,screenPositionX, screenPositionY, imageIdentifier) {
 }
 
 //game base related functions
-function buildBase(game,screenPositionX, screenPositionY, imageIdentifier){
+function buildSlide(game,screenPositionX, screenPositionY, imageIdentifier){
     var base = game.add.sprite(screenPositionX,screenPositionY, imageIdentifier);
     base.enableBody = true;
     game.physics.p2.enable(base);
+     base.body.setRectangle(330,76);
     base.physicsBodyType = Phaser.Physics.P2JS;
     base.body.static = true;
+   
     return base;
 }
 
@@ -83,7 +98,7 @@ function buildBubble(game,screenPositionX, screenPositionY, imageIdentifier){
 
 function bubbleCollisionWithAnObject(game,collisionObject, bubble){
        if(bubble.exists){
-           bubble.body.data.gravityScale=-15;
+           bubble.body.data.gravityScale=-20;
           var bubbleRevoluteConstraint =  game.physics.p2.createRevoluteConstraint(collisionObject, [collisionObject.width/2, 0], bubble, [bubble.width/2, 0], 2000);
            // collisionObject.enableBody = false;
             collisionObject.x = bubble.x;
@@ -106,6 +121,7 @@ function buildFruit(game,screenPositionX, screenPositionY, imageIdentifier){
      fruit.body.setCircle(22);
  //   fruit.body.acceleration.y= 100;
     fruit.body.mass = 5;
+    
     return fruit;
 }
 
@@ -159,7 +175,7 @@ function buildRope(game,obj1,obj2,ropeLength){
         game.physics.p2.enable(newBead);
         //  Set custom circle
         newBead.body.setCircle(width/2);
-        newBead.body.mass=1;
+       // newBead.body.mass=1;
         if(i==0){
             rope.myRevoluteConst.push( game.physics.p2.createRevoluteConstraint(newBead, [-width/2, 0], obj1, [obj1.width/2, 0], maxForce) );
         }
@@ -197,4 +213,8 @@ function breakBubble(game,bubbleRevoluteConstraint){
        
             game.bubble.kill();
     },game);
+}
+
+function distroyCoin(game){
+    
 }
