@@ -35,7 +35,7 @@ CutTheRope.level1.prototype = {
         this.omnom = buildOmnom(this,600,600,'omnom');
         this.omnom.frame = 0;
         
-        this.apple = buildFruit(this,600,this.world.centerY-220, 'apples');
+        this.apple = buildFruit(this,800,150, 'apples');
         this.appleCG = this.physics.p2.createCollisionGroup();
         this.omnomCG = this.physics.p2.createCollisionGroup();
         this.baseCG = this.physics.p2.createCollisionGroup();

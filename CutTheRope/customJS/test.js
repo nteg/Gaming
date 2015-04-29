@@ -24,7 +24,7 @@ CutTheRope.test = function(game) {
     this.base;
     this.goToMainMenu;
     this.dude;
-    
+    this.bubbleRevoluteConstraint;
 };
 
 
@@ -104,8 +104,9 @@ CutTheRope.test.prototype = {
        
        
        this.bubble.body.collides(this.appleCG);
-        this.apple.body.collides(this.bubbleCG, function(){bubbleCollisionWithAnObject(this,this.apple,this.bubble);},this);
-       breakBubble(this);
+        this.apple.body.collides(this.bubbleCG, function(){
+            this.bubbleRevoluteConstraint = bubbleCollisionWithAnObject(this,this.apple,this.bubble,this);},this);
+      breakBubble(this,this.bubbleRevoluteConstraint);
        
       //  this.apple.body.collides(this.omnomCG, omnomFruitCollision(this.apple,this.omnom), this);
       //    this.ant.body.collides(this.appleCG);

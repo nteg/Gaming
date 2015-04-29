@@ -83,13 +83,14 @@ function buildBubble(game,screenPositionX, screenPositionY, imageIdentifier){
 
 function bubbleCollisionWithAnObject(game,collisionObject, bubble){
        if(bubble.exists){
-           bubble.body.data.gravityScale=-10;
-          game.bubble.bubbleRevoluteConstraint =  game.physics.p2.createRevoluteConstraint(collisionObject, [collisionObject.width/2, 0], bubble, [bubble.width/2, 0], 2000);
+           bubble.body.data.gravityScale=-15;
+          var bubbleRevoluteConstraint =  game.physics.p2.createRevoluteConstraint(collisionObject, [collisionObject.width/2, 0], bubble, [bubble.width/2, 0], 2000);
+           // collisionObject.enableBody = false;
             collisionObject.x = bubble.x;
            collisionObject.y = bubble.y;
            
        }  
-   
+   return bubbleRevoluteConstraint;
     }
 
 //game fruit related functions
@@ -104,7 +105,7 @@ function buildFruit(game,screenPositionX, screenPositionY, imageIdentifier){
     fruit.physicsBodyType = Phaser.Physics.P2JS;
      fruit.body.setCircle(22);
  //   fruit.body.acceleration.y= 100;
-    fruit.body.mass = 1;
+    fruit.body.mass = 5;
     return fruit;
 }
 
@@ -158,7 +159,7 @@ function buildRope(game,obj1,obj2,ropeLength){
         game.physics.p2.enable(newBead);
         //  Set custom circle
         newBead.body.setCircle(width/2);
-        // newBead.inputEnabled = true;
+        newBead.body.mass=1;
         if(i==0){
             rope.myRevoluteConst.push( game.physics.p2.createRevoluteConstraint(newBead, [-width/2, 0], obj1, [obj1.width/2, 0], maxForce) );
         }
@@ -190,9 +191,9 @@ function breakRope(game){
     }
 }
 
-function breakBubble(game){
+function breakBubble(game,bubbleRevoluteConstraint){
     game.bubble.events.onInputDown.addOnce(function(){
-            game.physics.p2.removeConstraint(game.bubble.bubbleRevoluteConstraint);
+            game.physics.p2.removeConstraint(bubbleRevoluteConstraint);
        
             game.bubble.kill();
     },game);

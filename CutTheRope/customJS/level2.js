@@ -14,6 +14,7 @@ CutTheRope.level2 = function(game) {
     this.goToMainMenu;
     this.peg;
     this.rope;
+    this.bubbleRevoluteConstraint;
   
 };
 
@@ -59,7 +60,8 @@ CutTheRope.level2.prototype = {
         this.bubbleCG = this.physics.p2.createCollisionGroup();
         this.bubble.body.setCollisionGroup(this.bubbleCG);
         this.bubble.body.collides(this.appleCG);
-        this.apple.body.collides(this.bubbleCG, function(){bubbleCollisionWithAnObject(this,this.apple,this.bubble,this);},this);
+        this.apple.body.collides(this.bubbleCG, function(){
+            this.bubbleRevoluteConstraint = bubbleCollisionWithAnObject(this,this.apple,this.bubble,this);},this);
        
         this.goToMainMenu = this.add.bitmapText(1200, 100, 'eightbitwonder', 'Exit', 50);
         this.goToMainMenu.inputEnabled = true;
@@ -76,7 +78,7 @@ CutTheRope.level2.prototype = {
        breakRope(this);
         
        
-      breakBubble(this);
+      breakBubble(this,this.bubbleRevoluteConstraint);
      
    	}
 };
