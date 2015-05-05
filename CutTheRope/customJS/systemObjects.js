@@ -42,6 +42,19 @@ function buildCoin(game,screenPositionX, screenPositionY, imageIdentifier) {
     
 }
 
+function buildBlower(game,screenPositionX, screenPositionY, imageIdentifier) {
+    
+    var blower = createAnimation(game,screenPositionX, screenPositionY, imageIdentifier);
+    blower = addAnimation(game,blower, 'blow', 0, 6, 10, true );
+     blower.animations.play('blow');
+     blower.enableBody = true;
+    game.physics.p2.enable(blower);
+    blower.physicsBodyType = Phaser.Physics.P2JS;
+    blower.body.static = true;
+    return blower;
+    
+}
+
 function buildOmnom(game,screenPositionX, screenPositionY, imageIdentifier) {
     
     var omnom = createAnimation(game,screenPositionX, screenPositionY, imageIdentifier);

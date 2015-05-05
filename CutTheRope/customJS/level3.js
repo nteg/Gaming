@@ -20,7 +20,7 @@ CutTheRope.level3 = function(game) {
     this.bubbleRevoluteConstraint;
     this.coin = [];
     this.score = 0;
-  
+  this.blower;
 };
 
 
@@ -39,7 +39,8 @@ CutTheRope.level3.prototype = {
 
         this.background = this.add.image(0,0, 'greenBackground');
         this.background.scale.setTo(4,3);
-
+        
+        this.blower = buildBlower(this,300,500,'blower');
         
         this.slide[0] = buildSlide(this,800,200, 'base');
         this.slide[0].body.rotation=-3.14/6;
