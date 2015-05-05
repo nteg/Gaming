@@ -130,7 +130,8 @@ var SimpleGame = (function () {
         cursors = this.game.input.keyboard.createCursorKeys();
 
         addBlocksToScene(this);
-        this.timer = this.game.time.events.loop(2000,addBlocks,this);
+        this.timer = this.game.time.events.loop(2000,addPointBlocks,this);
+        this.timer = this.game.time.events.loop(2300,addObstacleBlocks,this);
     };
 
     SimpleGame.prototype.update = function () {
@@ -181,7 +182,8 @@ var SimpleGame = (function () {
             restartGame(this);
         }
 
-        /*for (index = 0; index < 4; index++){
+        /*
+        for (index = 0; index < 4; index++){
             
             //  Grab the first bullet we can from the pool
             ball = balls[index].getFirstExists(false);
@@ -213,7 +215,7 @@ var addBlocksToScene=function(scene){
 
 };
 
-var addBlocks= function() {  
+var addPointBlocks= function() {  
      
      
      for (var i = 0; i < 1; i++)
@@ -225,45 +227,50 @@ var addBlocks= function() {
         pointBlock=this.pointBlocks.getFirstDead();
         pointBlock.body.gravity.y=120;
         pointBlock.body.bounce.y=0.6 + Math.random()*0.1;
-        pointBlock.scale.setTo(0.3,0.3);        
-        pointBlock.reset(1300+randomNumber,randomNumber+100);
+        pointBlock.scale.setTo(0.5,0.5);        
+        pointBlock.reset(1300+randomNumber,randomNumber+300);
         pointBlock.body.velocity.x=-300;            
         pointBlock.body.angularVelocity=-50;
         pointBlock.checkWorldBounds=true;
         pointBlock.outOfBoundsKill=true;
 
-        //Adding yellow  obstacle block
-        obstacleBlock=this.obstacleBlocks.getFirstDead();
+        
+        /*obstacleBlock=this.obstacleBlocks.getFirstDead();
         obstacleBlock.body.gravity.y=100;
         obstacleBlock.body.bounce.y=0.5 + Math.random()*0.1;
-        obstacleBlock.scale.setTo(0.3,0.3); 
+        obstacleBlock.scale.setTo(0.4,0.4); 
         //obstacleBlock.reset(1300+randomNumber,randomNumber+105);
         obstacleBlock.reset(1350+randomNumber,randomNumber+135);
         obstacleBlock.body.velocity.x=-(320+(Math.random()*50));  
         obstacleBlock.body.angularVelocity=-50;             
         obstacleBlock.checkWorldBounds=true;
-        obstacleBlock.outOfBoundsKill=true;
+        obstacleBlock.outOfBoundsKill=true;*/
 
       }       
 
-    //
-    /*for(var j=0;j<1;j++)
+    
+
+};
+
+//Adding yellow  obstacle block
+var addObstacleBlocks=function()
+{
+      for(var j=0;j<1;j++)
     {
         var randomNumber=Math.floor(Math.random() * 50);
         
         obstacleBlock=this.obstacleBlocks.getFirstDead();
         obstacleBlock.body.gravity.y=100;
         obstacleBlock.body.bounce.y=0.5 + Math.random()*0.1;
-        obstacleBlock.scale.setTo(0.3,0.3); 
+        obstacleBlock.scale.setTo(0.5,0.5); 
         //obstacleBlock.reset(1300+randomNumber,randomNumber+105);
-        obstacleBlock.reset(1350+randomNumber,randomNumber+100);
-        obstacleBlock.body.velocity.x=-(300+(Math.random()*50));  
+        obstacleBlock.reset(1350+randomNumber,randomNumber+335);
+        obstacleBlock.body.velocity.x=-(320+(Math.random()*50));  
         obstacleBlock.body.angularVelocity=-50;             
         obstacleBlock.checkWorldBounds=true;
         obstacleBlock.outOfBoundsKill=true;
-    }*/
-
-};
+    }  
+}
 
 var restartGame=function(game){  
     game.truck.x=0; 
