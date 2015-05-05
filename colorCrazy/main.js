@@ -131,7 +131,7 @@ var SimpleGame = (function () {
 
         addBlocksToScene(this);
         this.timer = this.game.time.events.loop(2000,addPointBlocks,this);
-        this.timer = this.game.time.events.loop(2300,addObstacleBlocks,this);
+        this.timer = this.game.time.events.loop(2350,addObstacleBlocks,this);
     };
 
     SimpleGame.prototype.update = function () {
@@ -218,8 +218,8 @@ var addBlocksToScene=function(scene){
 var addPointBlocks= function() {  
      
      
-     for (var i = 0; i < 1; i++)
-     {
+     //for (var i = 0; i < 1; i++)
+     //{
 
         var randomNumber = Math.floor(Math.random() * 120) ; 
 
@@ -246,7 +246,7 @@ var addPointBlocks= function() {
         obstacleBlock.checkWorldBounds=true;
         obstacleBlock.outOfBoundsKill=true;*/
 
-      }       
+     // }       
 
     
 
@@ -255,8 +255,8 @@ var addPointBlocks= function() {
 //Adding yellow  obstacle block
 var addObstacleBlocks=function()
 {
-      for(var j=0;j<1;j++)
-    {
+    // for(var j=0;j<1;j++)
+    //{
         var randomNumber=Math.floor(Math.random() * 50);
         
         obstacleBlock=this.obstacleBlocks.getFirstDead();
@@ -269,7 +269,7 @@ var addObstacleBlocks=function()
         obstacleBlock.body.angularVelocity=-50;             
         obstacleBlock.checkWorldBounds=true;
         obstacleBlock.outOfBoundsKill=true;
-    }  
+    //}  
 }
 
 var restartGame=function(game){  
