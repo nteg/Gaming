@@ -215,11 +215,13 @@ var addBlocksToScene=function(scene){
 
 var addBlocks= function() {  
      
-     //Adding green point block   
+     
      for (var i = 0; i < 1; i++)
      {
+
         var randomNumber = Math.floor(Math.random() * 120) ; 
 
+        //Adding green point block   
         pointBlock=this.pointBlocks.getFirstDead();
         pointBlock.body.gravity.y=120;
         pointBlock.body.bounce.y=0.6 + Math.random()*0.1;
@@ -230,11 +232,22 @@ var addBlocks= function() {
         pointBlock.checkWorldBounds=true;
         pointBlock.outOfBoundsKill=true;
 
+        //Adding yellow  obstacle block
+        obstacleBlock=this.obstacleBlocks.getFirstDead();
+        obstacleBlock.body.gravity.y=100;
+        obstacleBlock.body.bounce.y=0.5 + Math.random()*0.1;
+        obstacleBlock.scale.setTo(0.3,0.3); 
+        //obstacleBlock.reset(1300+randomNumber,randomNumber+105);
+        obstacleBlock.reset(1350+randomNumber,randomNumber+135);
+        obstacleBlock.body.velocity.x=-(320+(Math.random()*50));  
+        obstacleBlock.body.angularVelocity=-50;             
+        obstacleBlock.checkWorldBounds=true;
+        obstacleBlock.outOfBoundsKill=true;
 
       }       
 
-    //Adding yellow  obstacle block
-    for(var j=0;j<1;j++)
+    //
+    /*for(var j=0;j<1;j++)
     {
         var randomNumber=Math.floor(Math.random() * 50);
         
@@ -248,7 +261,7 @@ var addBlocks= function() {
         obstacleBlock.body.angularVelocity=-50;             
         obstacleBlock.checkWorldBounds=true;
         obstacleBlock.outOfBoundsKill=true;
-    }
+    }*/
 
 };
 
