@@ -40,7 +40,8 @@ CutTheRope.level3.prototype = {
         this.background = this.add.image(0,0, 'greenBackground');
         this.background.scale.setTo(4,3);
         
-        this.blower = buildBlower(this,300,500,'blower');
+        this.blower = buildBlower(this,300,700,'blower');
+       // this.blower.scale.setTo(.5,.5);
         
         this.slide[0] = buildSlide(this,800,200, 'base');
         this.slide[0].body.rotation=-3.14/6;
@@ -118,6 +119,10 @@ CutTheRope.level3.prototype = {
         
        
       breakBubble(this,this.bubbleRevoluteConstraint);
+       
+       this.blower.events.onInputDown.addOnce(function(){
+          this.blower.animations.play('blow');
+    },this);
      
    	}
 };
