@@ -1,85 +1,90 @@
-CutTheRope.menu = function(game) {
-    this.titleText = null;
-    this.ready = false;
-    this.omnom;
-    this.apple;
-    this.appleCG;
-    this.omnomCG;  
-    this.baseCG;
-    this.background;
-    this.base;  
-    this.stage = [];
-    this.stage1= null;
-    this.stage2= null;
-    this.stage3= null;
+CutTheRope.Menu = function() {
+    var me =this;
+
+    me.titleText = null;
+    me.ready = false;
+    me.stage = [];
+    me.stage1= null;
+    me.stage2= null;
+    me.stage3= null;
 };
 
 
 
-CutTheRope.menu.prototype = {
-	
-	preload: function () {
-         this.background = this.add.image(0,0, 'stepBackground');
-        this.background.scale.setTo(2,2);
-        this.titleText = this.add.bitmapText(200, 70, 'eightbitwonder', 'Cut The Rope', 100);
-        this.stage[0] = this.add.bitmapText(800, 550, 'eightbitwonder', 'Level1', 50);
-        this.stage[1] = this.add.bitmapText(650, 430, 'eightbitwonder', 'Level2', 50);
-        this.stage[2] = this.add.bitmapText(400, 300, 'eightbitwonder', 'Level3', 50);
-        this.stage[3] = this.add.bitmapText(400, 600, 'eightbitwonder', 'test', 50);
+CutTheRope.Menu.prototype = {
+
+    preload: function () {
+
+        var me = this,
+            gameObj = me.game;
+
+        me.background = gameObj.add.image(0,0, 'stepBackground');
+        me.background.scale.setTo(2,2);
+        me.titleText = gameObj.add.bitmapText(200, 70, 'eightbitwonder', 'Cut The Rope', 100);
+        me.stage[0] = gameObj.add.bitmapText(800, 550, 'eightbitwonder', 'Level1', 50);
+        me.stage[1] = gameObj.add.bitmapText(650, 430, 'eightbitwonder', 'Level2', 50);
+        me.stage[2] = gameObj.add.bitmapText(400, 300, 'eightbitwonder', 'Level3', 50);
+        me.stage[3] = gameObj.add.bitmapText(400, 600, 'eightbitwonder', 'test', 50);
     },
 
-	create: function () {
-        this.physics.startSystem(Phaser.Physics.P2JS);
-       
-        this.base = buildSlide(this,1200,750, 'base');
-         this.base.scale.setTo(.5,1);
-        this.omnom = buildOmnom(this,1200,600,'omnom');
-        this.omnom.frame = 0;
-       
-      //  this.apple = buildFruit(this,1200,this.world.centerY-220, 'apples');
-         this.apple = buildFruit(this,1200,this.world.centerY-220, 'apples');
-            
-        this.appleCG = this.physics.p2.createCollisionGroup();
-        this.omnomCG = this.physics.p2.createCollisionGroup();
-        this.baseCG = this.physics.p2.createCollisionGroup();
-        this.physics.p2.updateBoundsCollisionGroup();
-       
-        this.omnom.body.setCollisionGroup(this.omnomCG);
-        this.base.body.setCollisionGroup(this.baseCG);
-        this.apple.body.setCollisionGroup(this.appleCG);
-        
-        
-        this.stage[0].inputEnabled = true;
-        this.stage[1].inputEnabled = true;
-        this.stage[2].inputEnabled = true;
-         this.stage[3].inputEnabled = true;
-   
-        this.stage[0].events.onInputDown.addOnce(function(){
-           this.state.start('level1');
-        },this);
-        
-        this.stage[1].events.onInputDown.addOnce(function(){
-           this.state.start('level2');
-        },this);
-        
-        this.stage[2].events.onInputDown.addOnce(function(){
-           this.state.start('level3');
-        },this);
-        
-        this.stage[3].events.onInputDown.addOnce(function(){
-           this.state.start('test');
-        },this);
-     },
-    
+    create: function () {
+        var me = this,
+            gameObj = me.game;
 
-   update: function () {
-         
-	   	this.ready = true;
-        this.omnom.body.collides(this.appleCG);
-        this.apple.body.collides(this.omnomCG, function(){omnomFruitCollision(this,this.apple,this.omnom);},this);
-        this.omnom.body.collides(this.baseCG);
-        this.base.body.collides(this.omnomCG);
-       
-   	}
+        gameObj.physics.startSystem(Phaser.Physics.P2JS);
+
+        me.base = buildSlide(this,1200,750, 'base');
+        me.base.scale.setTo(.5,1);
+        me.omnom = buildOmnom(this,1200,600,'omnom');
+        me.omnom.frame = 0;
+
+        //this.apple = buildFruit(this,1200,this.world.centerY-220, 'apples');
+        me.apple = buildFruit(this,1200,this.world.centerY-220, 'apples');
+
+        me.appleCG = gameObj.physics.p2.createCollisionGroup();
+        me.omnomCG = gameObj.physics.p2.createCollisionGroup();
+        me.baseCG  = gameObj.physics.p2.createCollisionGroup();
+        gameObj.physics.p2.updateBoundsCollisionGroup();
+
+        me.omnom.body.setCollisionGroup(me.omnomCG);
+        me.base.body.setCollisionGroup(me.baseCG);
+        me.apple.body.setCollisionGroup(me.appleCG);
+
+
+        me.stage[0].inputEnabled = true;
+        me.stage[1].inputEnabled = true;
+        me.stage[2].inputEnabled = true;
+        me.stage[3].inputEnabled = true;
+
+        me.stage[0].events.onInputDown.addOnce(function(){
+            gameObj.state.start('Level1');
+        },this);
+
+        me.stage[1].events.onInputDown.addOnce(function(){
+            gameObj.state.start('Level2');
+        },this);
+
+        me.stage[2].events.onInputDown.addOnce(function(){
+            gameObj.state.start('Level3');
+        },this);
+
+        me.stage[3].events.onInputDown.addOnce(function(){
+            gameObj.state.start('Test');
+        },this);
+    },
+
+
+    update: function () {
+        var me =this;
+
+        me.ready = true;
+        me.omnom.body.collides(me.appleCG);
+        me.apple.body.collides(me.omnomCG, function(){
+            omnomFruitCollision(me.game, me.apple, me.omnom);
+        },this);
+        me.omnom.body.collides(me.baseCG);
+        me.base.body.collides(me.omnomCG);
+
+    }
 };
 

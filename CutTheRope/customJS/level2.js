@@ -1,123 +1,126 @@
-CutTheRope.level2 = function(game) {
-    this.titleText = null;
-    this.scoreText = null;
-    this.ready = false;
-    this.omnom;
-    this.apple;
-    this.appleCG;
-    this.omnomCG;  
-    this.slideCG;
-    this.coinCG;
-    this.background;
-   
-    this.slide =[];
-     
-    this.bubble;
- this.bubbleCG;
-    this.goToMainMenu;
-    this.peg;
-    this.rope;
-    this.bubbleRevoluteConstraint;
-    this.coin = [];
-    this.score = 0;
-  
+CutTheRope.Level2 = function(game) {
+    var me= this,
+        pi = 3.14;
+
+    me.titleText = null;
+    me.scoreText = null;
+    me.ready = false;
+    me.slide =[];
+    me.coin = [];
+    me.score = 0;
+    me.COIN_POS = [
+        {x : 1000, y :300 },
+        {x : 1100, y :250 },
+        {x : 1200, y :100 }
+    ];
+
+    me.SLIDE_POS = [
+        { x : 800, y :200, rotation : -pi/6  },
+        { x : 1100, y :300, rotation : -pi/6  },
+        { x : 1250, y :100, rotation : -pi/2  },
+        { x : 800, y :800, rotation : 0  }
+    ];
 };
 
 
 
-CutTheRope.level2.prototype = {
-	
-	preload: function () {
-        this.titleText = this.add.bitmapText(70, 70, 'eightbitwonder', 'Cut The Rope', 34);
+CutTheRope.Level2.prototype = {
+
+    preload: function () {
+        this.titleText = this.game.add.bitmapText(70, 70, 'eightbitwonder', 'Cut The Rope', 34);
         this.score = 0;
     },
 
-	create: function () {
-         
-        
-        this.physics.startSystem(Phaser.Physics.P2JS);
+    create: function () {
+        var me= this,
+            gameObj = me.game;
 
-        this.background = this.add.image(0,0, 'greenBackground');
-        this.background.scale.setTo(4,3);
+        gameObj.physics.startSystem(Phaser.Physics.P2JS);
 
-        
-        this.slide[0] = buildSlide(this,800,200, 'base');
-        this.slide[0].body.rotation=-3.14/6;
-        this.slide[0].scale.setTo(1,1);
-        this.slide[1] = buildSlide(this,1100,300, 'base');
-        this.slide[1].body.rotation=-3.14/6;
-        this.slide[1].scale.setTo(1,1);
-        this.slide[2] = buildSlide(this,1250,100, 'base');
-        this.slide[2].body.rotation=-3.14/2;
-        this.slide[3] = buildSlide(this,800,800, 'base');
-        
-         this.coin[0] = buildCoin(this,1000,300,'coin');
-         this.coin[1] = buildCoin(this,1100,250,'coin');
-         this.coin[2] = buildCoin(this,1200,100,'coin');
-        
-        
-        this.omnom = buildOmnom(this,800,600,'omnom');
-        this.omnom.frame = 0;
-        this.apple = buildFruit(this,800,100, 'apples');
-       
-        this.appleCG = this.physics.p2.createCollisionGroup();
-        this.omnomCG = this.physics.p2.createCollisionGroup();
-        this.slideCG = this.physics.p2.createCollisionGroup();
-       this.coinCG = this.physics.p2.createCollisionGroup();
-        
-        this.physics.p2.updateBoundsCollisionGroup();
-       
-        this.coin[0].body.setCollisionGroup(this.coinCG);
-         this.coin[1].body.setCollisionGroup(this.coinCG);
-         this.coin[2].body.setCollisionGroup(this.coinCG);
-        this.apple.body.setCollisionGroup(this.appleCG);
-        this.omnom.body.setCollisionGroup(this.omnomCG);
-        this.slide[3].body.setCollisionGroup(this.slideCG);
-       
-        this.omnom.body.collides(this.appleCG);
-        this.apple.body.collides(this.omnomCG, function(){omnomFruitCollision(this,this.apple,this.omnom);},this);
-        this.omnom.body.collides(this.slideCG);
-        this.slide[3].body.collides(this.omnomCG);
-        
-        this.peg = buildPeg(this,400, 100,'orb');
-        
-        this.rope = buildRope(this,this.peg,this.apple,20);
-             
-        this.bubble =  buildBubble(this,this.world.centerX,this.world.centerY, 'bubble');
-        this.bubbleCG = this.physics.p2.createCollisionGroup();
-        this.bubble.body.setCollisionGroup(this.bubbleCG);
-        this.bubble.body.collides(this.appleCG);
-        this.apple.body.collides(this.bubbleCG, function(){
-            this.bubbleRevoluteConstraint = bubbleCollisionWithAnObject(this,this.apple,this.bubble,this);},this);
-         this.apple.body.collides(this.coinCG);
+        me.background = gameObj.add.image(0,0, 'greenBackground');
+        me.background.scale.setTo(4,3);
+
+
+        for(var i=0; i< me.SLIDE_POS.length; i++) {
+            var tempSlide = buildSlide( gameObj, me.SLIDE_POS[i].x, me.SLIDE_POS[i].y, 'base');
+            tempSlide.body.rotation=  me.SLIDE_POS[i].rotation;
+            me.slide.push(tempSlide);
+        }
+        //me.slide[0].scale.setTo(1,1);
+
+
+        me.omnom = buildOmnom(gameObj,800,600,'omnom');
+        me.omnom.frame = 0;
+        me.apple = buildFruit(gameObj,800,100, 'apples');
+
+        me.appleCG = gameObj.physics.p2.createCollisionGroup();
+        me.omnomCG = gameObj.physics.p2.createCollisionGroup();
+        me.slideCG = gameObj.physics.p2.createCollisionGroup();
+        me.coinCG  = gameObj.physics.p2.createCollisionGroup();
+
+        for(i=0; i< me.COIN_POS.length; i++){
+            var tempCoin = buildCoin(gameObj, me.COIN_POS[i].x, me.COIN_POS[i].y,'coin');
+            tempCoin.body.setCollisionGroup(me.coinCG);
+            me.coin.push(tempCoin);
+        }
+
+        gameObj.physics.p2.updateBoundsCollisionGroup();
+
+        me.apple.body.setCollisionGroup(this.appleCG);
+        me.omnom.body.setCollisionGroup(this.omnomCG);
+        me.slide[3].body.setCollisionGroup(this.slideCG);
+
+        me.omnom.body.collides(this.appleCG);
+        me.apple.body.collides(this.omnomCG, function(){omnomFruitCollision(this,this.apple,this.omnom);},this);
+        me.omnom.body.collides(this.slideCG);
+        me.slide[3].body.collides(this.omnomCG);
+
+        me.peg = buildPeg(gameObj,400, 100,'orb');
+
+        me.rope = buildRope(gameObj,me.peg,me.apple,20);
+
+        me.bubble =  buildBubble(this,gameObj.world.centerX,gameObj.world.centerY, 'bubble');
+        me.bubbleCG = this.physics.p2.createCollisionGroup();
+        me.bubble.body.setCollisionGroup(this.bubbleCG);
+        me.bubble.body.collides(this.appleCG);
+
+        me.apple.body.collides(this.bubbleCG, function(){
+            this.bubbleRevoluteConstraint = bubbleCollisionWithAnObject(this,this.apple,this.bubble,this);
+        },this);
+
+        this.apple.body.collides(this.coinCG);
+
         this.coin[0].body.collides(this.appleCG, function(){
             this.score++;
-            this.coin[0].kill();},this);
+            this.coin[0].kill();
+        },this);
+
         this.coin[1].body.collides(this.appleCG, function(){
             this.score++;
             this.coin[1].kill();},this);
         this.coin[2].body.collides(this.appleCG, function(){
             this.score++;
             this.coin[2].kill();},this);
-       
+
         this.goToMainMenu = this.add.bitmapText(1200, 100, 'eightbitwonder', 'Exit', 50);
         this.goToMainMenu.inputEnabled = true;
-   
-        this.goToMainMenu.events.onInputDown.addOnce(function(){
-           this.state.start('menu');
-        },this);
-     },
-    
 
-   update: function () {
-         
-	   	this.ready = true;
-        this.scoreText = this.add.bitmapText(70, 70, 'eightbitwonder', 'Your Score:- '+this.score, 20);
-       breakRope(this);
-        
-       
-      breakBubble(this,this.bubbleRevoluteConstraint);
-     
-   	}
+        this.goToMainMenu.events.onInputDown.addOnce(function(){
+            this.state.start('Menu');
+        },this);
+    },
+
+
+    update: function () {
+        var me= this;
+
+        me.ready = true;
+        me.scoreText = me.add.bitmapText(70, 70, 'eightbitwonder', 'Your Score:- '+me.score, 20);
+        breakRope(me);
+
+
+        breakBubble(this,this.bubbleRevoluteConstraint);
+
+    }
 };
 
