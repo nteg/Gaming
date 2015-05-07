@@ -1,8 +1,8 @@
-SpaceShooter.Game = function(game) {
+SpaceShooter.Level2 = function(game) {
   this.initializeGame();
 }
 
-SpaceShooter.Game.prototype = {
+SpaceShooter.Level2.prototype = {
     
     initializeGame : function (){
     this.far;
@@ -14,7 +14,7 @@ SpaceShooter.Game.prototype = {
     this.currentWeapon = 0;
     this.asteroids;
     this.enemySpeed = 200;
-    this.level = 1;
+    this.level = 2;
     this.maxLevels = 3;
     this.enemies;
     this.explosions;
@@ -45,15 +45,15 @@ SpaceShooter.Game.prototype = {
         
         // Add game audio files.
         this.playerFire = this.game.add.audio('playerFire');
-        this.enemyFire = this.game.add.audio('enemyFire');
+        this.enemyFire = this.game.add.audio('playerFire');
         this.explosionSound = this.game.add.audio('explosionSound');
         
         // restrict ship movement to canvas bounds.
         ship.body.collideWorldBounds = true;
 
         // Add new weapon types to weapons array.
-        this.weapons.push(new Weapon.SingleBullet(this.game, 600,200,'bullet1'));
-        this.weapons.push(new Weapon.SingleBullet(this.game, -500,2000,'enemyBullet1'));
+        this.weapons.push(new Weapon.ScatterShot(this.game, 600,175,'bullet1'));
+        this.weapons.push(new Weapon.SingleBullet(this.game, -500,1000,'enemyBullet1'));
         this.currentWeapon = 0;
         this.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
         
@@ -85,23 +85,9 @@ SpaceShooter.Game.prototype = {
     
     update: function () {
 
-        background.tilePosition.x -= 1; 
-        
-        // If user has scored 1000 points then advance to level 2.
-        if(this.score == 1000) {
-            
-            this.game.paused = true;
-            var levelCompletionText = this.add.text(300, 250, "Congratulations!! \n\nLevel 1 Completed! \nTap anywhere to begin level 2.", { font: '36px Arial', fill: '#ffffff' });
-            levelCompletionText.anchor.set(0.5);
-            this.input.onDown.add(function(){
-                levelCompletionText.destroy();
-                this.game.paused = false;
-                this.score = 0;
-                this.game.state.start('Level2');
-            }, this);
-        } else {
-            
-            // mouse cursor movement 
+        background.tilePosition.x -= 1;  
+
+        // mouse cursor movement 
         // Reset the player, then check for movement keys
         ship.body.velocity.setTo(0, 0);
 
@@ -121,8 +107,8 @@ SpaceShooter.Game.prototype = {
         
         // Capture spacebar event and fire bullets.
         if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {            
-            this.weapons[this.currentWeapon].fire(ship,this.playerFire);
-//            this.playerFire.play();
+            this.weapons[this.currentWeapon].fire(ship);
+            this.playerFire.play();
         }
 
         this.physics.arcade.overlap(this.enemies, this.weapons[this.currentWeapon], this.hitEnemy, null, this);
@@ -138,7 +124,6 @@ SpaceShooter.Game.prototype = {
         this.gameTime += this.delay;
         if(Math.random() < 1 - Math.pow(.999, this.gameTime)) {
             this.launchEnemy();
-            }
         }
     },
     
@@ -183,7 +168,7 @@ SpaceShooter.Game.prototype = {
             this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
             this.enemies.enableBody = true;
 
-            this.enemies.createMultiple(100, 'enemyBlack1');
+            this.enemies.createMultiple(100, 'enemyGreen1');
             this.enemies.setAll('anchor.x', 0.5);
             this.enemies.setAll('anchor.y', 0.5);
             this.enemies.setAll('body.velocity.x', -80);
@@ -207,7 +192,7 @@ SpaceShooter.Game.prototype = {
                 // Set enemy ship angle to face the direction of the player ship.
                 var angle = this.game.physics.arcade.moveToObject(enemy, ship, this.enemySpeed);
                 enemy.angle = this.game.math.radToDeg(angle);
-                enemyWeapon.fire(enemy,this.enemyFire);
+                enemyWeapon.fire(enemy);
             }
         }
     },
@@ -236,6 +221,7 @@ SpaceShooter.Game.prototype = {
     },
     
     hitEnemy: function(enemy, bullet) {
+        
         this.explosionSound.play();
         
         var explosion = this.explosions.getFirstExists(false);
@@ -275,11 +261,7 @@ SpaceShooter.Game.prototype = {
                 this.input.onDown.add(function(){
                 gameOverText.destroy();
                     this.enemies = [];
-                    player.pos = [10, 200];
-                    this.score = 0;
-                    this.scoreText.setText("Score: " +this.score);
-                    this.createEnemy();
-                this.game.paused = false;
+                    this.game.paused = false;
                     this.restartGame();
                 }, this);
         }
@@ -291,7 +273,7 @@ SpaceShooter.Game.prototype = {
         //resets the life count
         this.lives.callAll('revive');
         
-        this.game.state.start('Game');
+        this.game.state.start('Level2');
         this.initializeGame();
     },
 
@@ -316,8 +298,6 @@ SpaceShooter.Game.prototype = {
     Bullet.prototype.constructor = Bullet;
     Bullet.prototype.fire = function (x, y, angle, speed, gx, gy) {
 
-        
-        this.playerFire.play();
         gx = gx || 0;
         gy = gy || 0;
 
@@ -332,7 +312,9 @@ SpaceShooter.Game.prototype = {
     };
 
     var Weapon = {};
-    Weapon.SingleBullet = function (game, bulletSpeed,fireRate, bulletName) {
+
+// Single enemy bullets
+ Weapon.SingleBullet = function (game, bulletSpeed,fireRate, bulletName) {
         
         Phaser.Group.call(this, game, game.world, 'Single Bullet', false, true, Phaser.Physics.ARCADE);
 
@@ -349,9 +331,8 @@ SpaceShooter.Game.prototype = {
 
     Weapon.SingleBullet.prototype = Object.create(Phaser.Group.prototype);
     Weapon.SingleBullet.prototype.constructor = Weapon.SingleBullet;
-    Weapon.SingleBullet.prototype.fire = function (source, sound) {
+    Weapon.SingleBullet.prototype.fire = function (source) {
 
-        sound.play();
         if (this.game.time.time < this.nextFire) { return; }
 
         var x = source.x + source.width/2; 
@@ -362,4 +343,40 @@ SpaceShooter.Game.prototype = {
         this.nextFire = this.game.time.time + this.fireRate;
 
     };
- 
+
+// Scattered player bullets.
+    Weapon.ScatterShot = function (game, bulletSpeed,fireRate, bulletName) {
+
+        Phaser.Group.call(this, game, game.world, 'Single Bullet', false, true, Phaser.Physics.ARCADE);
+
+        this.nextFire = 0;
+        this.bulletSpeed = bulletSpeed;
+        this.fireRate = fireRate;
+
+         for (var i = 0; i < 64; i++)
+        {
+            this.add(new Bullet(game, bulletName), true);
+        }
+        return this;
+
+    };
+
+    Weapon.ScatterShot.prototype = Object.create(Phaser.Group.prototype);
+    Weapon.ScatterShot.prototype.constructor = Weapon.ScatterShot;
+
+    Weapon.ScatterShot.prototype.fire = function (source) {
+
+//        this.playerFire.play();
+        if (this.game.time.time < this.nextFire) { return; }
+
+        var x = source.x + source.width/2; 
+        var y = source.y + source.height/2;
+//        var y = (source.y + source.height / 2) + this.game.rnd.realInRange(-20, 20);
+
+        this.getFirstExists(false).fire(x, y-20, 0, this.bulletSpeed, 0, -500);
+        this.getFirstExists(false).fire(x, y+20, 0, this.bulletSpeed, 0, 500);
+        this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
+
+        this.nextFire = this.game.time.time + this.fireRate;
+
+    };

@@ -4,6 +4,7 @@ window.onload = function() {
             game.state.add('Boot', SpaceShooter.Boot);
             game.state.add('Preloader', SpaceShooter.Preloader);
             game.state.add('Game', SpaceShooter.Game);
+            game.state.add('Level2', SpaceShooter.Level2);
             game.state.start('Boot');
     
 }
