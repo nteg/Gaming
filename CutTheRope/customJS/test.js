@@ -1,4 +1,4 @@
-CutTheRope.test = function(game) {
+CutTheRope.Test = function(game) {
    // this.preloadBar = null;
     this.titleText = null;
     this.ready = false;
@@ -29,7 +29,7 @@ CutTheRope.test = function(game) {
 
 
 
-CutTheRope.test.prototype = {
+CutTheRope.Test.prototype = {
 	
 	preload: function () {
 		 
@@ -83,7 +83,7 @@ CutTheRope.test.prototype = {
          this.goToMainMenu.inputEnabled = true;
    
         this.goToMainMenu.events.onInputDown.addOnce(function(){
-           this.state.start('menu');
+           this.state.start('Menu');
         },this);
         
         

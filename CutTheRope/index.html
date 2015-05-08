@@ -1,45 +1,45 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>Cut The Rope</title>
+    <meta charset="utf-8">
+    <title>Cut The Rope</title>
     <script src="libs/phaser.js"></script>
-     <script src="libs/jquery.min.js"></script>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>  -->
-    <script src="customJS/Boot.js"></script>
+    <!--<script src="libs/jquery.min.js"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>  -->
     <script src="customJS/Preloader.js"></script>
     <script src="customJS/universalCustomFunctions.js"></script>
     <script src="customJS/systemObjects.js"></script>
     <script src="customJS/level1.js"></script>
-     <script src="customJS/level2.js"></script>
+    <script src="customJS/level2.js"></script>
     <script src="customJS/level3.js"></script>
     <script src="customJS/test.js"></script>
-     <script src="customJS/menu.js"></script>
-	<style>
-		body {
-			padding: 0;
-			margin: 0;
-			background-color: #000000;
-		}
-	</style>
-</head>
-<body>
-    <div id="gameContainer"></div>
-
-    <script type="text/javascript">
-        window.onload = function(){
-            var game = new Phaser.Game(1500,900,Phaser.Auto, 'gameContainer');
-            $(window).resize(function() { window.resizeGame(game); } );
-            game.state.add('Boot',CutTheRope.Boot);
-            game.state.add('Preloader',CutTheRope.Preloader);
-            game.state.add('level1',CutTheRope.level1);
-             game.state.add('level2',CutTheRope.level2);
-            game.state.add('level3',CutTheRope.level3);
-            game.state.add('test',CutTheRope.test);
-             game.state.add('menu',CutTheRope.menu);
-            game.state.start('Boot');
-           
+    <script src="customJS/menu.js"></script>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: #000000;
         }
-    </script>
+    </style>
+</head>
+<body oncontextmenu="return false;">
+<div id="gameContainer"></div>
+
+<script type="text/javascript">
+    window.onload = function(){
+        var game = new Phaser.Game(1500,900,Phaser.Auto, 'gameContainer'),
+                gameStates= ["Preloader","Level1","Level2","Level3","Test", "Menu"];
+
+        window.addEventListener("resize", function() {
+            window.resizeGame(game);
+        });
+
+        for (var i=0; i<gameStates.length; i++) {
+            game.state.add( gameStates[i], CutTheRope[gameStates[i]]);
+
+        }
+        game.state.start('Preloader');
+    }
+</script>
 </body>
 </html>
