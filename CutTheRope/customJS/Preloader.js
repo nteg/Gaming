@@ -28,7 +28,7 @@ CutTheRope.Preloader.prototype = {
          this.load.spritesheet('bubble','images/bubble.png',34,34);
           this.load.spritesheet('apples','images/spritesheets/apples.png',83,82);
       
-         this.load.spritesheet('blower','images/spritesheets/ballonSprite.png',400,270.5);
+         this.load.spritesheet('blower','images/spritesheets/ballonSprite.png',425,290);
       
      
 	},
