@@ -32,7 +32,7 @@ CutTheRope.Preloader.prototype = {
         gameObj.load.spritesheet('bubble','images/bubble.png',34,34);
         gameObj.load.spritesheet('apples','images/spritesheets/apples.png',83,82);
 
-        gameObj.load.spritesheet('blower','images/spritesheets/ballonSprite.png',400,270.5);
+        gameObj.load.spritesheet('blower','images/spritesheets/ballonSprite.png',425,290);
 
 
     },
@@ -67,4 +67,5 @@ CutTheRope.Preloader.prototype = {
         this.ready = true;
         this.game.state.start('Menu');
     }
+
 };

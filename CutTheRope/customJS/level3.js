@@ -108,6 +108,8 @@ CutTheRope.Level3.prototype = {
         this.goToMainMenu.events.onInputDown.addOnce(function(){
            this.state.start('Menu');
         },this);
+        
+         //this.blower.frame = 0;
      },
     
 
@@ -119,7 +121,7 @@ CutTheRope.Level3.prototype = {
         
        
       breakBubble(this,this.bubbleRevoluteConstraint);
-       
+      
        this.blower.events.onInputDown.addOnce(function(){
           this.blower.animations.play('blow');
     },this);

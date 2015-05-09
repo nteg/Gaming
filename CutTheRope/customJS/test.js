@@ -83,7 +83,7 @@ CutTheRope.Test.prototype = {
          this.goToMainMenu.inputEnabled = true;
    
         this.goToMainMenu.events.onInputDown.addOnce(function(){
-           this.state.start('menu');
+           this.state.start('Menu');
         },this);
         
         

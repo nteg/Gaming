@@ -45,19 +45,16 @@ function buildCoin(game,screenPositionX, screenPositionY, imageIdentifier) {
 function buildBlower(game,screenPositionX, screenPositionY, imageIdentifier) {
 
     var blower = createAnimation(game,screenPositionX, screenPositionY, imageIdentifier);
-    blower = addAnimation(game,blower, 'blow', 0, 7, 8, false );
-    // blower = addAnimation(game,blower, 'spand', 4, 7, 8, true );
-    blower.anchor.setTo(0.5, 0.5);
+    blower = addAnimation(game,blower, 'blow', 0, 7, 15, false );
+   // blower = addAnimation(game,blower, 'spand', 4, 7, 8, true );
+     blower.anchor.setTo(0.5, 0.5);
     // blower.animations.play('srink');
-    blower.frame = 0;
     blower.inputEnabled = true;
-
-
-
     blower.enableBody = true;
     game.physics.p2.enable(blower);
     blower.physicsBodyType = Phaser.Physics.P2JS;
     blower.body.static = true;
+    blower.body.setCircle(100);
     return blower;
 
 }
