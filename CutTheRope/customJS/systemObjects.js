@@ -100,7 +100,7 @@ function buildAnt(game,screenPositionX, screenPositionY, imageIdentifier) {
 
 function buildBubble(game,screenPositionX, screenPositionY, imageIdentifier){
     var bubble = game.add.sprite(screenPositionX,screenPositionY, imageIdentifier);
-    bubble.scale.setTo(3,3);
+    bubble.scale.setTo(3.5,3.5);
     bubble.anchor.setTo(0.5,0.5);
 
     bubble.enableBody = true;
@@ -118,14 +118,11 @@ function buildBubble(game,screenPositionX, screenPositionY, imageIdentifier){
 
 function bubbleCollisionWithAnObject(game,collisionObject, bubble){
     if(bubble.exists){
-        bubble.body.data.gravityScale=-20;
-        var bubbleRevoluteConstraint =  game.physics.p2.createRevoluteConstraint(collisionObject, [collisionObject.width/2, 0], bubble, [bubble.width/2, 0], 2000);
-        // collisionObject.enableBody = false;
-        collisionObject.x = bubble.x;
-        collisionObject.y = bubble.y;
+        bubble.body.data.gravityScale = -18;
 
+        //  Lock the two bodies together. The [0, 0] sets the distance apart
+        return game.physics.p2.createLockConstraint(collisionObject, bubble, [0, 0], 0);
     }
-    return bubbleRevoluteConstraint;
 }
 
 //game fruit related functions
@@ -138,7 +135,7 @@ function buildFruit(game,screenPositionX, screenPositionY, imageIdentifier){
     game.physics.p2.enable(fruit);
     fruit.frame = game.rnd.integerInRange(0,2);
     fruit.physicsBodyType = Phaser.Physics.P2JS;
-    fruit.body.setCircle(22);
+    fruit.body.setCircle(33);
     //   fruit.body.acceleration.y= 100;
     fruit.body.mass = 5;
 
@@ -147,8 +144,10 @@ function buildFruit(game,screenPositionX, screenPositionY, imageIdentifier){
 
 function omnomFruitCollision(game,fruit,omnom){
     if(fruit.exists){
-        game.physics.p2.createRevoluteConstraint(fruit, [fruit.width/2, 0], omnom, [omnom.width/2, 0], 2000);
+        //game.physics.p2.createRevoluteConstraint(fruit, [fruit.width/2, 0], omnom, [omnom.width/2, 0], 2000);
+        game.physics.p2.createLockConstraint(fruit, omnom, [0, 0], 0);
         omnom.animations.play('eat');
+
         omnom.events.onAnimationComplete.add(function(){
             fruit.kill();
             omnom.frame = 0;
@@ -181,7 +180,6 @@ function buildPeg(game,screenPositionX, screenPositionY, imageIdentifier){
 
 function buildRope(game,obj1,obj2,ropeLength){
     var rope ={
-        IS_MOUSE_HELD : false,
         beads:game.add.group(),
         myRevoluteConst: []
     };
@@ -207,20 +205,19 @@ function buildRope(game,obj1,obj2,ropeLength){
     }
     game.physics.p2.createRevoluteConstraint(obj2, [0, -40], rope.beads.children[rope.beads.children.length-1], [2, 0], maxForce);
     rope.beads.setAll('inputEnabled', true);
-    game.input.onDown.add(function(){rope.IS_MOUSE_HELD =true;}, this);
-    game.input.onUp.add(function(){rope.IS_MOUSE_HELD =false;}, this);
     return rope;
 }
 
-function breakRope(game){
-    if(game.rope.IS_MOUSE_HELD){
-        var length = game.rope.beads.length,
-            strike=false;
+function breakRope(stateObj){
+    if(stateObj.IS_MOUSE_HELD){
+        var length = stateObj.rope.beads.length,
+            strike=false,
+            game= stateObj.game;
         for(var i= 0; i<length; i++){
-            strike = game.rope.beads.children[i].input.checkPointerOver(game.input.mousePointer);
+            strike = stateObj.rope.beads.children[i].input.checkPointerOver(game.input.mousePointer);
             if(strike) {
                 //breakRope(i);
-                game.physics.p2.removeConstraint(game.rope.myRevoluteConst[i]);
+                game.physics.p2.removeConstraint(stateObj.rope.myRevoluteConst[i]);
                 break;
             }
 
@@ -234,8 +231,26 @@ function breakBubble(game,bubbleRevoluteConstraint){
 
         game.bubble.kill();
     },game);
+
+
+
 }
 
 function distroyCoin(game){
 
+}
+
+function buildCoins(gameObj, coinPosArray, bodyGrp1, bodyGrp2, callback){
+    var coins=[], tempCoin;
+    for(var i=0; i< coinPosArray.length; i++){
+        tempCoin = buildCoin(gameObj, coinPosArray[i].x, coinPosArray[i].y,'coin');
+        tempCoin.body.setCollisionGroup(bodyGrp1);
+        tempCoin.body.collides(bodyGrp2, function(coin, omnom){
+            callback();
+            coin.sprite.kill();
+        },this);
+        coins.push(tempCoin);
+    }
+
+    return coins;
 }

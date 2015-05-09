@@ -30,16 +30,16 @@
         var game = new Phaser.Game(1500,900,Phaser.Auto, 'gameContainer'),
                 gameStates= ["Preloader","Level1","Level2","Level3","Test", "Menu"];
 
-        window.addEventListener("resize", function() {
+        /*window.addEventListener("resize", function() {
             window.resizeGame(game);
-        });
+        });*/
 
         for (var i=0; i<gameStates.length; i++) {
             game.state.add( gameStates[i], CutTheRope[gameStates[i]]);
 
         }
         game.state.start('Preloader');
-    }
+    };
 </script>
 </body>
 </html>
