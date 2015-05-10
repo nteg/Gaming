@@ -7,16 +7,15 @@ var SimpleGame = (function () {
     SimpleGame.prototype.preload = function () {
         this.game.load.image('sky', 'assets/sky.png');
         this.game.load.atlasXML('scenery', 'assets/bgElements_spritesheet.png', 'assets/bgElements_spritesheet.xml');
-        this.game.load.spritesheet('frontMountain', 'assets/frontMountain.png');
-        //this.game.load.atlasXML('cars', 'assets/sheet_allCars.png', 'assets/sheet_allCars.xml');
+        this.game.load.spritesheet('frontMountain', 'assets/frontMountain.png');        
         this.game.load.atlasXML('cars', 'assets/monsterTruck.png', 'assets/monsterTruck.xml');
         this.game.load.spritesheet('road', 'assets/road.png');
         
-        //this.game.load.spritesheet('balls','assets/balls_spritesheet.png',259,259,4);
+        this.game.load.image('blueBlock','assets/blueBlock.png');
+        this.game.load.image('redBlock','assets/redBlock.png');
+        this.game.load.image('brownBlock','assets/brownBlock.png');
+        this.game.load.image('blackBlock','assets/blackBlock.png');
         
-        this.game.load.image('yellowBlock','assets/yellowBlock.png');
-        this.game.load.image('greenBlock','assets/greenBlock.png');
-
         this.game.load.audio('jumpSound', ['assets/GU-StealDaisy.mp3', 'assets/GU-StealDaisy.ogg']);
     };
 
@@ -31,6 +30,10 @@ var SimpleGame = (function () {
         
         this.score = 0;  
         this.labelScore = this.game.add.text(10, 10, "0", { font: "30px Arial", fill: "#ffffff" });
+
+        this.animationFrame=null;
+        this.frameNumber=null;
+        this.blockType=null;
 
         /*
         55  -   SUN
@@ -97,22 +100,16 @@ var SimpleGame = (function () {
 
         this.truck = this.game.add.sprite(0, 0, 'cars');
         this.truck.scale.x = .2;
-        this.truck.scale.y = .2;
-        //this.truck.animations.add('rainbow', [105, 204, 300, 392, 489], 1, true);
-        this.truck.animations.add('rainbow', [0, 1, 2, 3, 4, 5, 6, 7, 8], 0.5, true);
+        this.truck.scale.y = .2;       
 
-        /*for(index = 0; index < 4; index++){
-            balls[index] = new Array();
-            balls[index] = this.game.add.group();
-            balls[index].enableBody = true;
-            balls[index].physicsBodyType = Phaser.Physics.ARCADE;
-            balls[index].createMultiple(1, 'balls', index);
-            balls[index].scale.x = 0.7;
-            balls[index].scale.y = 0.7;
-            balls[index].setAll('outOfBoundsKill', true);
-            balls[index].setAll('checkWorldBounds', true);
-        }*/
+        /*
+          0 -  blue
+          1 - red
+          2 - brown
+          3 - black          
+        */
 
+        this.truck.animations.add('rainbow', [0, 1, 2, 3], 0.1, true);        
         this.game.physics.arcade.enable([this.road, this.truck]);
         
         this.road.body.setSize(1349, 100, 0, 60);
@@ -124,28 +121,28 @@ var SimpleGame = (function () {
         this.truck.body.bounce.y = 0.4;
         this.truck.body.velocity.x = 50;
         this.truck.body.maxVelocity.x = 200;
-        
-        // this.firstBall.body.velocity.x = -250;
-
+                
         cursors = this.game.input.keyboard.createCursorKeys();
 
-        addBlocksToScene(this);
-        this.timer = this.game.time.events.loop(2000,addPointBlocks,this);
-        this.timer = this.game.time.events.loop(2350,addObstacleBlocks,this);
+        addBlocksToScene(this);   
+        this.timer = this.time.events.loop(2000,addBlocks,this);             
     };
 
     SimpleGame.prototype.update = function () {
         
-        this.game.physics.arcade.collide(this.road, this.truck);
-        //this.game.physics.arcade.collide(balls, this.truck);       
-        this.game.physics.arcade.collide(this.road,this.pointBlocks);
-        this.game.physics.arcade.collide(this.road,this.obstacleBlocks);
+        this.truck.animations.play('rainbow');                
         
-        this.game.physics.arcade.overlap(this.truck,this.pointBlocks,collectPoints,null,this);
-        this.game.physics.arcade.overlap(this.truck,this.obstacleBlocks, truckObstacleCollision,null,this);
+        this.game.physics.arcade.collide(this.road, this.truck); 
+        this.game.physics.arcade.collide(this.road,this.blueBlocks);
+        this.game.physics.arcade.collide(this.road,this.redBlocks);
+        this.game.physics.arcade.collide(this.road,this.brownBlocks);
+        this.game.physics.arcade.collide(this.road,this.blackBlocks);
         
-
-        this.truck.animations.play('rainbow');
+        this.game.physics.arcade.overlap(this.truck,this.blueBlocks,truckBlockOverlap,null,this);
+        this.game.physics.arcade.overlap(this.truck,this.redBlocks,truckBlockOverlap,null,this);
+        this.game.physics.arcade.overlap(this.truck,this.brownBlocks,truckBlockOverlap,null,this);
+        this.game.physics.arcade.overlap(this.truck,this.blackBlocks,truckBlockOverlap,null,this);       
+        
 
         if(this.sunObj.x > 1310){
             this.sunObj.x = -65;
@@ -181,95 +178,89 @@ var SimpleGame = (function () {
         {
             restartGame(this);
         }
-
-        /*
-        for (index = 0; index < 4; index++){
-            
-            //  Grab the first bullet we can from the pool
-            ball = balls[index].getFirstExists(false);
-
-            if (ball)
-            {
-                ball.reset(1361 + ((index+1) * 550), 570);
-                ball.body.velocity.x = -250;
-                ball.body.immovable = true;
-            }
-        }*/
+        
     };
 
     return SimpleGame;
 })();
 
-var addBlocksToScene=function(scene){
+var addBlocksToScene=function(scene){               
 
-        //Create Obstacle Block Group
-        scene.obstacleBlocks=scene.game.add.group();
-        scene.obstacleBlocks.enableBody=true;
-        scene.obstacleBlocks.createMultiple(2000,'yellowBlock');
+        //Create blue block group
+        scene.blueBlocks=scene.game.add.group();
+        scene.blueBlocks.enableBody=true;
+        scene.blueBlocks.createMultiple(2000,'blueBlock');
         
 
-        //Create Point Block Group
-        scene.pointBlocks=scene.game.add.group(); //create a group
-        scene.pointBlocks.enableBody=true; //Add physics to the group
-        scene.pointBlocks.createMultiple(2000,'greenBlock');
+        //Create red block group
+        scene.redBlocks=scene.game.add.group();
+        scene.redBlocks.enableBody=true;
+        scene.redBlocks.createMultiple(2000,'redBlock');
+        
 
+        //Create  brown block group
+        scene.brownBlocks=scene.game.add.group();
+        scene.brownBlocks.enableBody=true;
+        scene.brownBlocks.createMultiple(2000,'brownBlock');
+        
+
+        //Create black block group
+        scene.blackBlocks=scene.game.add.group();
+        scene.blackBlocks.enableBody=true;
+        scene.blackBlocks.createMultiple(2000,'blackBlock');
+        
+        
 };
 
-var addPointBlocks= function() {  
-     
-     
-     //for (var i = 0; i < 1; i++)
-     //{
+var addBlocks=function(){
+        
+        this.frameNumber = Math.floor(Math.random()*10)
+        
+        /*
+        0,4,8 -> blueblock            0-> blue car
+        1,5,9 -> redBlocks            1->red car
+        2,6 -> brownBlock             2->brown car
+        3,7 -> blackBlocks            3-> black car                  
 
-        var randomNumber = Math.floor(Math.random() * 120) ; 
-
-        //Adding green point block   
-        pointBlock=this.pointBlocks.getFirstDead();
-        pointBlock.body.gravity.y=120;
-        pointBlock.body.bounce.y=0.6 + Math.random()*0.1;
-        pointBlock.scale.setTo(0.5,0.5);        
-        pointBlock.reset(1300+randomNumber,randomNumber+300);
-        pointBlock.body.velocity.x=-300;            
-        pointBlock.body.angularVelocity=-50;
-        pointBlock.checkWorldBounds=true;
-        pointBlock.outOfBoundsKill=true;
+        */
+        
+        
+        if(this.frameNumber == 0 || this.frameNumber == 4 || this.frameNumber == 8){
+         this.blockType=this.blueBlocks;
+         this.frameNumber=0;
+        }
+        else if(this.frameNumber == 1 || this.frameNumber == 5 || this.frameNumber == 9){
+         this.blockType=this.redBlocks;
+         this.frameNumber=1;
+        }
+        else if(this.frameNumber == 2 || this.frameNumber== 6){
+         this.blockType=this.brownBlocks;
+         this.frameNumber=2;
+        }            
+        else if(this.frameNumber == 3 || this.frameNumber == 7){
+         this.blockType=this.blackBlocks;
+         this.frameNumber=3;
+        }
 
         
-        /*obstacleBlock=this.obstacleBlocks.getFirstDead();
-        obstacleBlock.body.gravity.y=100;
-        obstacleBlock.body.bounce.y=0.5 + Math.random()*0.1;
-        obstacleBlock.scale.setTo(0.4,0.4); 
-        //obstacleBlock.reset(1300+randomNumber,randomNumber+105);
-        obstacleBlock.reset(1350+randomNumber,randomNumber+135);
-        obstacleBlock.body.velocity.x=-(320+(Math.random()*50));  
-        obstacleBlock.body.angularVelocity=-50;             
-        obstacleBlock.checkWorldBounds=true;
-        obstacleBlock.outOfBoundsKill=true;*/
-
-     // }       
-
-    
-
-};
-
-//Adding yellow  obstacle block
-var addObstacleBlocks=function()
-{
-    // for(var j=0;j<1;j++)
-    //{
-        var randomNumber=Math.floor(Math.random() * 50);
+        if(this.frameNumber != undefined && this.blockType != null)
+        {
         
-        obstacleBlock=this.obstacleBlocks.getFirstDead();
-        obstacleBlock.body.gravity.y=100;
-        obstacleBlock.body.bounce.y=0.5 + Math.random()*0.1;
-        obstacleBlock.scale.setTo(0.5,0.5); 
-        //obstacleBlock.reset(1300+randomNumber,randomNumber+105);
-        obstacleBlock.reset(1350+randomNumber,randomNumber+335);
-        obstacleBlock.body.velocity.x=-(320+(Math.random()*50));  
-        obstacleBlock.body.angularVelocity=-50;             
-        obstacleBlock.checkWorldBounds=true;
-        obstacleBlock.outOfBoundsKill=true;
-    //}  
+            var randomNumber = Math.floor(Math.random() * 120) ;                
+            gameBlock=this.blockType.getFirstDead();
+            if(gameBlock != null)
+            {
+                gameBlock.body.gravity.y=120;
+                gameBlock.body.bounce.y=0.6 + Math.random()*0.1;
+                gameBlock.scale.setTo(0.5,0.5);        
+                gameBlock.reset(1300+randomNumber,randomNumber+300);
+                gameBlock.body.velocity.x=-300;            
+                gameBlock.body.angularVelocity=-50;
+                gameBlock.checkWorldBounds=true;
+                gameBlock.frameNumber=this.frameNumber;
+
+           }
+         }
 }
 
 var restartGame=function(game){  
@@ -279,9 +270,11 @@ var restartGame=function(game){
     game.score=0;
     game.labelScore.text=game.score;
 
-    game.obstacleBlocks.destroy();
-    game.pointBlocks.destroy();
-
+    game.blueBlocks.destroy();
+    game.redBlocks.destroy();
+    game.brownBlocks.destroy();
+    game.blackBlocks.destroy();
+  
     addBlocksToScene(game);
 };
 
@@ -289,17 +282,24 @@ var resetBody = function (obj, parentSpeed) {
     obj.x = parentSpeed * 10;
 };
 
-var collectPoints=function(truck,pointBlock){        
-        pointBlock.kill();        
+var truckBlockOverlap=function(truck,gameBlock){
+
+    this.animationFrame=this.truck.animations.currentAnim.frame;
+
+    if(this.animationFrame == gameBlock.frameNumber )
+    {
+
+        gameBlock.kill();        
         this.score += 1;  
         this.labelScore.text = this.score;
-};
+    }
+    else
+    {
+        gameBlock.kill();
+        restartGame(this);
+    }
 
-var truckObstacleCollision=function(truck,obstacleBlock){
-    obstacleBlock.kill();
-    restartGame(this);
 };
-
 
 window.onload = function () {
     var game = new SimpleGame();
