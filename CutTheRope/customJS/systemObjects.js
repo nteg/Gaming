@@ -62,11 +62,25 @@ function buildBlower(game,screenPositionX, screenPositionY, imageIdentifier) {
 function buildOmnom(game,screenPositionX, screenPositionY, imageIdentifier) {
 
     var omnom = createAnimation(game,screenPositionX, screenPositionY, imageIdentifier);
-    omnom = addAnimation(game,omnom, 'eat',0,5 , 10, false );
+    omnom = addAnimation(game,omnom, 'eat',0,5 , 5, false );
+      omnom = addAnimation(game,omnom, 'wait',0,1 , 1, true );
+    omnom.animations.play('wait');
     omnom.body.mass = 50;
     //   omnom.body.fixedRotation = true
-    omnom.body.setRectangle(200, 10);
+    omnom.body.setRectangle(200, 100);
+     omnom.anchor.setTo(0.5, 0.7);
     return omnom;
+
+}
+
+function buildWorm(game,screenPositionX, screenPositionY, imageIdentifier) {
+
+    var worm = createAnimation(game,screenPositionX, screenPositionY, imageIdentifier);
+    worm = addAnimation(game,worm, 'eat',0,5 , 5, false );
+    worm.body.mass = 50;
+    //   omnom.body.fixedRotation = true
+    worm.body.setRectangle(200, 10);
+    return worm;
 
 }
 
@@ -145,12 +159,15 @@ function buildFruit(game,screenPositionX, screenPositionY, imageIdentifier){
 function omnomFruitCollision(game,fruit,omnom){
     if(fruit.exists){
         game.physics.p2.createRevoluteConstraint(fruit, [fruit.width/2, 0], omnom, [omnom.width/2, 0], 2000);
+        omnom.animations.stop('wait');
         omnom.animations.play('eat');
         omnom.events.onAnimationComplete.add(function(){
             fruit.kill();
             omnom.frame = 0;
         }, this);
-
+         omnom.animations.stop('eat');
+         omnom.animations.play('wait');
+       
     }
 }
 

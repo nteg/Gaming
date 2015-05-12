@@ -27,12 +27,16 @@ CutTheRope.Preloader.prototype = {
         gameObj.load.atlasXML('bunny', 'images/spritesheets/bunny.png', 'images/spritesheets/bunny.xml');
         gameObj.load.spritesheet('dude', 'images/spritesheets/dude.png', 32, 48);
         gameObj.load.spritesheet('coin', 'images/spritesheets/coinSpriteSheet.png', 40, 44);
-        gameObj.load.spritesheet('omnom', 'images/spritesheets/omnom-eat.png', 157, 162);
+      //  gameObj.load.spritesheet('omnom', 'images/spritesheets/omnom-eat.png', 157, 162);
+        gameObj.load.spritesheet('omnom', 'images/spritesheets/cuteBitingMonster.png',304,270);
+ 
         gameObj.load.spritesheet('ant', 'images/spritesheets/ant.png', 47, 23);
         gameObj.load.spritesheet('bubble','images/bubble.png',34,34);
         gameObj.load.spritesheet('apples','images/spritesheets/apples.png',83,82);
 
         gameObj.load.spritesheet('blower','images/spritesheets/ballonSprite.png',425,290);
+          gameObj.load.spritesheet('worm','images/spritesheets/cuteBitingMonster.png',304,270);
+       //  gameObj.load.spritesheet('worm1','images/spritesheets/worm.png',65,70);
 
 
     },

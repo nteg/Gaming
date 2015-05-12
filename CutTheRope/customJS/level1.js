@@ -4,6 +4,7 @@ CutTheRope.Level1 = function() {
     this.ready = false;
     this.coin = [];
     this.score = 0;
+    this.worm;
 };
 
 
@@ -27,6 +28,12 @@ CutTheRope.Level1.prototype = {
         this.base = buildSlide(this,600,800, 'base');
         this.omnom = buildOmnom(this,600,600,'omnom');
         this.omnom.frame = 0;
+        
+        // this.worm = buildWorm(this,400,600,'worm');
+       // this.worm.body.static = true;
+        //this.worm.scale.setTo(4,4);
+       // this.worm.animations.play('eat');
+       // this.worm.frame = 0;
 
         this.apple = buildFruit(this,800,150, 'apples');
         this.appleCG = this.physics.p2.createCollisionGroup();
