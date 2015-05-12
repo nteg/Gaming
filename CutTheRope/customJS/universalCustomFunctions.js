@@ -69,8 +69,8 @@ function setCollisions (game,obj1, obj2, callback)
 
 
 function resizeGame(game) {
-    var height = $(window).height();
-    var width = $(window).width();
+    var height = window.innerHeight;
+    var width = window.innerWidth;
 
     game.width = width;
     game.height = height;

@@ -61,7 +61,7 @@ CutTheRope.Preloader.prototype = {
         gameObj.physics.p2.gravity.y = 300;
         gameObj.physics.p2.setImpactEvents(true);
         gameObj.physics.p2.restitution = 0.2;
-        gameObj.physics.p2.friction=1;
+        gameObj.physics.p2.friction=.1;
 
         //this.scale.minWidth = 270;
         //this.scale.minHeight = 480;

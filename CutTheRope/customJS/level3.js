@@ -36,7 +36,7 @@ CutTheRope.Level3.prototype = {
          
         
         this.physics.startSystem(Phaser.Physics.P2JS);
-
+        this.IS_MOUSE_HELD = false;
         this.background = this.add.image(0,0, 'greenBackground');
         this.background.scale.setTo(4,3);
         
