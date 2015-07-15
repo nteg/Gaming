@@ -153,7 +153,7 @@ function buildFruit(game,screenPositionX, screenPositionY, imageIdentifier){
     return fruit;
 }
 
-function omnomFruitCollision(game,fruit,omnom){
+function omnomFruitCollision(game,fruit,omnom,loadNextLevel){
     if(fruit.exists){
        // omnom.animations.stop('wait');
         //game.physics.p2.createRevoluteConstraint(fruit, [fruit.width/2, 0], omnom, [omnom.width/2, 0], 2000);
@@ -165,6 +165,7 @@ function omnomFruitCollision(game,fruit,omnom){
             fruit.kill();
         //    omnom.frame = 0;
             omnom.animations.play('wait');
+             game.state.start(loadNextLevel);
         }, this);
       //   omnom.animations.stop('eat');
          

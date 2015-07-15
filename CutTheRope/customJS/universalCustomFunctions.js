@@ -69,13 +69,13 @@ function setCollisions (game,obj1, obj2, callback)
 
 
 function resizeGame(game) {
-    var height = window.innerHeight;
+   // var height = window.innerHeight;
     var width = window.innerWidth;
-
+    var height = width*(.7);
     game.width = width;
     game.height = height;
-    game.stage.bounds.width = width;
-    game.stage.bounds.height = height;
+   // game.stage.bounds.width = width;
+   // game.stage.bounds.height = height;
 
     if (game.renderType == Phaser.WEBGL)
     {

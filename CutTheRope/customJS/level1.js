@@ -37,7 +37,7 @@ CutTheRope.Level1.prototype = {
         
         me.background = this.add.image(0,0, 'greenBackground');
         me.background.scale.setTo(4,3);
-
+        levelTag = me.add.bitmapText(400, 70, 'eightbitwonder', 'Level 1', 34);
 
         me.base = buildSlide(this,600,800, 'base');
         me.omnom = buildOmnom(this,600,600,'omnom');
@@ -54,7 +54,10 @@ CutTheRope.Level1.prototype = {
         me.base.body.setCollisionGroup(me.baseCG);
         me.omnom.body.collides(me.appleCG);
         me.apple.body.collides(me.omnomCG, function(apple, omnom){
-            omnomFruitCollision(gameObj,apple.sprite,omnom.sprite);
+            omnomFruitCollision(gameObj,apple.sprite,omnom.sprite, 'Level2');
+            
+            
+           
         },this);
 
         me.omnom.body.collides(me.baseCG);

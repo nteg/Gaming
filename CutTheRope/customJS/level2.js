@@ -15,10 +15,12 @@ CutTheRope.Level2 = function(game) {
     ];
 
     me.SLIDE_POS = [
-        { x : 800, y :200, rotation : -pi/6  },
+        { x : 750, y :200, rotation : -pi/6  },
         { x : 1100, y :300, rotation : -pi/6  },
         { x : 1250, y :100, rotation : -pi/2  },
-        { x : 800, y :850, rotation : 0  }
+        { x : 900, y :0, rotation : -pi/2  },
+        { x : 1000, y :500, rotation : -pi/2  },
+        { x : 700, y :850, rotation : 0  }
     ];
 };
 
@@ -40,12 +42,12 @@ CutTheRope.Level2.prototype = {
         me.background = gameObj.add.image(0,0, 'greenBackground');
         me.background.scale.setTo(4,3);
 
-
-        me.omnom = buildOmnom(gameObj,800,600,'omnom');
+        levelTag = me.add.bitmapText(400, 70, 'eightbitwonder', 'Level 2', 34);
+        me.omnom = buildOmnom(gameObj,700,600,'omnom');
         me.omnom.frame = 0;
-        setTimeout(function(){
+     /**   setTimeout(function(){
             me.omnom.body.static = true;
-        },3000);
+        },3000);*/
 
         me.apple = buildFruit(gameObj,800,100, 'apples');
 
@@ -73,7 +75,7 @@ CutTheRope.Level2.prototype = {
         me.omnom.body.collides(me.appleCG);
         me.apple.body.collides(me.slideCG);
         me.apple.body.collides(me.omnomCG, function(apple, omnom){
-            omnomFruitCollision(this,apple.sprite,omnom.sprite);
+            omnomFruitCollision(this,apple.sprite,omnom.sprite,'Menu');
             me.bubble.kill();
             if(me.bubbleLockConstraint) gameObj.physics.p2.removeConstraint(me.bubbleLockConstraint);
         },this);
@@ -91,6 +93,7 @@ CutTheRope.Level2.prototype = {
 
         me.apple.body.collides(me.bubbleCG, function(){
             me.bubbleLockConstraint = bubbleCollisionWithAnObject(gameObj,me.apple,me.bubble);
+            // console.log(me.bubbleLockConstraint);
         },this);
 
         me.apple.body.collides(me.coinCG);
@@ -104,7 +107,7 @@ CutTheRope.Level2.prototype = {
             gameObj.state.start('Menu');
         },this);
 
-        breakBubble(me,me.bubbleLockConstraint);
+       
     },
 
 
@@ -112,6 +115,7 @@ CutTheRope.Level2.prototype = {
         var me= this;
 
         me.ready = true;
+         breakBubble(me,me.bubbleLockConstraint);
         me.scoreText = me.add.bitmapText(70, 70, 'eightbitwonder', 'Your Score:- '+me.score, 20);
         breakRope(me);
     }
