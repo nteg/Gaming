@@ -1,10 +1,11 @@
 //var balls = new Array();
 
-var SimpleGame = (function () {
-    function SimpleGame() {
-        this.game = new Phaser.Game(1350, 600, Phaser.CANVAS, 'content', { preload: this.preload, create: this.create, update: this.update });
-    }
-    SimpleGame.prototype.preload = function () {
+var SimpleGame = function (game) {}
+    
+SimpleGame.prototype={
+
+        preload:function () {
+        this.game.score = 0;     
         this.game.load.image('sky', 'assets/sky.png');
         this.game.load.atlasXML('scenery', 'assets/bgElements_spritesheet.png', 'assets/bgElements_spritesheet.xml');
         this.game.load.spritesheet('frontMountain', 'assets/frontMountain.png');        
@@ -15,11 +16,11 @@ var SimpleGame = (function () {
         this.game.load.image('redBlock','assets/redBlock.png');
         this.game.load.image('brownBlock','assets/brownBlock.png');
         this.game.load.image('blackBlock','assets/blackBlock.png');
-        
+        this.game.load.image("exitgame","assets/exitBtn.png");
         this.game.load.audio('jumpSound', ['assets/GU-StealDaisy.mp3', 'assets/GU-StealDaisy.ogg']);
-    };
+    },
 
-    SimpleGame.prototype.create = function () {
+    create:function () {
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -28,9 +29,10 @@ var SimpleGame = (function () {
         this.background = this.game.add.sprite(0,0,'sky');
         //this.background.tint = 16711680;
         
-        this.score = 0;  
-        this.labelScore = this.game.add.text(10, 10, "0", { font: "30px Arial", fill: "#ffffff" });
-
+        //this.score = 0;  
+        this.labelScore = this.game.add.text(10, 10, "0", { font: "30px Arial", fill: "#ffffff" });        
+        this.game.add.button(1200,0,"exitgame",this.exitGame,this);
+        
         this.animationFrame=null;
         this.frameNumber=null;
         this.blockType=null;
@@ -124,11 +126,11 @@ var SimpleGame = (function () {
                 
         cursors = this.game.input.keyboard.createCursorKeys();
 
-        addBlocksToScene(this);   
-        this.timer = this.time.events.loop(2000,addBlocks,this);             
-    };
+        this.addBlocksToScene();   
+        this.timer = this.time.events.loop(2000,this.addBlocks,this);             
+    },
 
-    SimpleGame.prototype.update = function () {
+    update:function () {
         
         this.truck.animations.play('rainbow');                
         
@@ -138,35 +140,36 @@ var SimpleGame = (function () {
         this.game.physics.arcade.collide(this.road,this.brownBlocks);
         this.game.physics.arcade.collide(this.road,this.blackBlocks);
         
-        this.game.physics.arcade.overlap(this.truck,this.blueBlocks,truckBlockOverlap,null,this);
-        this.game.physics.arcade.overlap(this.truck,this.redBlocks,truckBlockOverlap,null,this);
-        this.game.physics.arcade.overlap(this.truck,this.brownBlocks,truckBlockOverlap,null,this);
-        this.game.physics.arcade.overlap(this.truck,this.blackBlocks,truckBlockOverlap,null,this);       
+        this.game.physics.arcade.overlap(this.truck,this.blueBlocks,this.truckBlockOverlap,null,this);
+        this.game.physics.arcade.overlap(this.truck,this.redBlocks,this.truckBlockOverlap,null,this);
+        this.game.physics.arcade.overlap(this.truck,this.brownBlocks,this.truckBlockOverlap,null,this);
+        this.game.physics.arcade.overlap(this.truck,this.blackBlocks,this.truckBlockOverlap,null,this);       
         
 
         if(this.sunObj.x > 1310){
             this.sunObj.x = -65;
         }
         if(this.bigStick.x < 0){
-            resetBody(this.bigStick, 150);
+            this.resetBody(this.bigStick, 150);
         }
         if(this.smallStick.x < 0){
-            resetBody(this.smallStick, 150);
+            this.resetBody(this.smallStick, 150);
         }
         if(this.bluePeak.x < 0){
-            resetBody(this.bluePeak, 150);
+            this.resetBody(this.bluePeak, 150);
         }
         if(this.birch.x < 0){
-            resetBody(this.birch, 150);
+            this.resetBody(this.birch, 150);
         }
 
         if (cursors.left.isDown) {
-                this.truck.body.velocity.x = 0;
+                this.truck.body.velocity.x-= 10 ;
+                   
         }
         else if (cursors.right.isDown) {
             this.truck.body.velocity.x = 200;
         }
-        else if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+        else if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || cursors.up.isDown) {
             if(this.truck.body.y > 430) {
                 
                 this.truck.body.velocity.y = -500;
@@ -176,44 +179,38 @@ var SimpleGame = (function () {
 
         if(this.truck.inWorld==false)
         {
-            restartGame(this);
+            this.restartGame();
         }
         
-    };
+    },
 
-    return SimpleGame;
-})();
-
-var addBlocksToScene=function(scene){               
-
+    addBlocksToScene:function(){
         //Create blue block group
-        scene.blueBlocks=scene.game.add.group();
-        scene.blueBlocks.enableBody=true;
-        scene.blueBlocks.createMultiple(2000,'blueBlock');
+        this.blueBlocks=this.game.add.group();
+        this.blueBlocks.enableBody=true;
+        this.blueBlocks.createMultiple(2000,'blueBlock');
         
 
         //Create red block group
-        scene.redBlocks=scene.game.add.group();
-        scene.redBlocks.enableBody=true;
-        scene.redBlocks.createMultiple(2000,'redBlock');
+        this.redBlocks=this.game.add.group();
+        this.redBlocks.enableBody=true;
+        this.redBlocks.createMultiple(2000,'redBlock');
         
 
         //Create  brown block group
-        scene.brownBlocks=scene.game.add.group();
-        scene.brownBlocks.enableBody=true;
-        scene.brownBlocks.createMultiple(2000,'brownBlock');
+        this.brownBlocks=this.game.add.group();
+        this.brownBlocks.enableBody=true;
+        this.brownBlocks.createMultiple(2000,'brownBlock');
         
 
         //Create black block group
-        scene.blackBlocks=scene.game.add.group();
-        scene.blackBlocks.enableBody=true;
-        scene.blackBlocks.createMultiple(2000,'blackBlock');
-        
-        
-};
+        this.blackBlocks=this.game.add.group();
+        this.blackBlocks.enableBody=true;
+        this.blackBlocks.createMultiple(2000,'blackBlock');
+    },
 
-var addBlocks=function(){
-        
+    addBlocks:function(){
+
         this.frameNumber = Math.floor(Math.random()*10)
         
         /*
@@ -261,8 +258,132 @@ var addBlocks=function(){
 
            }
          }
-}
+    },
 
+    exitGame:function(){
+        this.game.state.start("mainmenu");
+    },
+
+    restartGame:function(){  
+    this.truck.x=0; 
+    this.truck.y=0;
+    this.truck.body.velocity.x=0;
+    
+    this.game.score=0;
+    this.labelScore.text=this.game.score;
+
+    this.blueBlocks.destroy();
+    this.redBlocks.destroy();
+    this.brownBlocks.destroy();
+    this.blackBlocks.destroy();
+  
+    this.addBlocksToScene();
+    },
+
+     resetBody : function (obj, parentSpeed) {
+        obj.x = parentSpeed * 10;
+    },
+
+     truckBlockOverlap:function(truck,gameBlock){
+
+        this.animationFrame=this.truck.animations.currentAnim.frame;
+
+        if(this.animationFrame == gameBlock.frameNumber )
+        {
+
+            gameBlock.kill();        
+            this.game.score += 1;  
+            this.labelScore.text = this.game.score;
+        }
+        else
+        {
+            gameBlock.kill();
+            //this.restartGame();
+            this.game.state.start("gameover");
+        }
+
+    }
+    //return SimpleGame;
+}
+//)();
+
+/*
+var addBlocksToScene=function(scene){               
+
+        //Create blue block group
+        scene.blueBlocks=scene.game.add.group();
+        scene.blueBlocks.enableBody=true;
+        scene.blueBlocks.createMultiple(2000,'blueBlock');
+        
+
+        //Create red block group
+        scene.redBlocks=scene.game.add.group();
+        scene.redBlocks.enableBody=true;
+        scene.redBlocks.createMultiple(2000,'redBlock');
+        
+
+        //Create  brown block group
+        scene.brownBlocks=scene.game.add.group();
+        scene.brownBlocks.enableBody=true;
+        scene.brownBlocks.createMultiple(2000,'brownBlock');
+        
+
+        //Create black block group
+        scene.blackBlocks=scene.game.add.group();
+        scene.blackBlocks.enableBody=true;
+        scene.blackBlocks.createMultiple(2000,'blackBlock');
+        
+        
+};*/
+
+/*
+var addBlocks=function(){
+        
+        this.frameNumber = Math.floor(Math.random()*10)
+        
+        
+      
+        
+        
+        if(this.frameNumber == 0 || this.frameNumber == 4 || this.frameNumber == 8){
+         this.blockType=this.blueBlocks;
+         this.frameNumber=0;
+        }
+        else if(this.frameNumber == 1 || this.frameNumber == 5 || this.frameNumber == 9){
+         this.blockType=this.redBlocks;
+         this.frameNumber=1;
+        }
+        else if(this.frameNumber == 2 || this.frameNumber== 6){
+         this.blockType=this.brownBlocks;
+         this.frameNumber=2;
+        }            
+        else if(this.frameNumber == 3 || this.frameNumber == 7){
+         this.blockType=this.blackBlocks;
+         this.frameNumber=3;
+        }
+
+        
+        if(this.frameNumber != undefined && this.blockType != null)
+        {
+        
+            var randomNumber = Math.floor(Math.random() * 120) ;                
+            gameBlock=this.blockType.getFirstDead();
+            if(gameBlock != null)
+            {
+                gameBlock.body.gravity.y=120;
+                gameBlock.body.bounce.y=0.6 + Math.random()*0.1;
+                gameBlock.scale.setTo(0.5,0.5);        
+                gameBlock.reset(1300+randomNumber,randomNumber+300);
+                gameBlock.body.velocity.x=-300;            
+                gameBlock.body.angularVelocity=-50;
+                gameBlock.checkWorldBounds=true;
+                gameBlock.frameNumber=this.frameNumber;
+
+           }
+         }
+}*/
+
+/*
 var restartGame=function(game){  
     game.truck.x=0; 
     game.truck.y=0;
@@ -299,8 +420,9 @@ var truckBlockOverlap=function(truck,gameBlock){
         restartGame(this);
     }
 
-};
+};*/
 
+/*
 window.onload = function () {
     var game = new SimpleGame();
-};
+};*/

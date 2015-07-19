@@ -5,8 +5,22 @@
     <meta charset="utf-8" />
     <title>color crazy</title>
     <link rel="stylesheet" href="styles.css" type="text/css" />
-    <script src="phaser.js"></script>
-    <script src="main.js"></script>
+    <script type="text/javascript" src="phaser.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="mainmenu.js"></script>
+    <script type="text/javascript" src="gameover.js"></script>
+
+
+    <script>
+        (function(){
+            var game=new Phaser.Game(1350,600,Phaser.CANVAS,"game");
+            game.state.add("mainmenu",MenuItems);
+            game.state.add("thegame",SimpleGame);
+            game.state.add("gameover",GameOver);
+            game.state.start("mainmenu");
+
+        })();
+    </script>
 </head>
 <body>
     
