@@ -1,11 +1,11 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{87560946-A0A1-2A5F-A911-C34D0827B5F3}") = "3D Car Racing", "Assembly-CSharp-firstpass.csproj", "{115BAB08-2A72-FB09-1B98-E84DAAAF0AAC}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3D Car Racing.CSharp.Plugins", "3D Car Racing.CSharp.Plugins.csproj", "{B3BAC2CD-F55D-4F75-C79B-B85BA881A22E}"
 EndProject
-Project("{87560946-A0A1-2A5F-A911-C34D0827B5F3}") = "3D Car Racing", "Assembly-CSharp.csproj", "{FE3B61E3-340A-64AA-CC82-A1AC4242BF3F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3D Car Racing.CSharp", "3D Car Racing.CSharp.csproj", "{53B76686-56AB-0FBF-7026-FB7477F7C0BD}"
 EndProject
-Project("{87560946-A0A1-2A5F-A911-C34D0827B5F3}") = "3D Car Racing", "Assembly-CSharp-Editor.csproj", "{2D44CC51-515A-BC3A-F30E-A9AC074D7BB0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3D Car Racing.CSharp.Editor", "3D Car Racing.CSharp.Editor.csproj", "{9D6AB2B2-4D17-F0FB-EAD6-91B037B9139A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,40 +13,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{115BAB08-2A72-FB09-1B98-E84DAAAF0AAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{115BAB08-2A72-FB09-1B98-E84DAAAF0AAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{115BAB08-2A72-FB09-1B98-E84DAAAF0AAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{115BAB08-2A72-FB09-1B98-E84DAAAF0AAC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FE3B61E3-340A-64AA-CC82-A1AC4242BF3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE3B61E3-340A-64AA-CC82-A1AC4242BF3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE3B61E3-340A-64AA-CC82-A1AC4242BF3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE3B61E3-340A-64AA-CC82-A1AC4242BF3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2D44CC51-515A-BC3A-F30E-A9AC074D7BB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D44CC51-515A-BC3A-F30E-A9AC074D7BB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D44CC51-515A-BC3A-F30E-A9AC074D7BB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D44CC51-515A-BC3A-F30E-A9AC074D7BB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3BAC2CD-F55D-4F75-C79B-B85BA881A22E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3BAC2CD-F55D-4F75-C79B-B85BA881A22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3BAC2CD-F55D-4F75-C79B-B85BA881A22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3BAC2CD-F55D-4F75-C79B-B85BA881A22E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53B76686-56AB-0FBF-7026-FB7477F7C0BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B76686-56AB-0FBF-7026-FB7477F7C0BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B76686-56AB-0FBF-7026-FB7477F7C0BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53B76686-56AB-0FBF-7026-FB7477F7C0BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D6AB2B2-4D17-F0FB-EAD6-91B037B9139A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D6AB2B2-4D17-F0FB-EAD6-91B037B9139A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D6AB2B2-4D17-F0FB-EAD6-91B037B9139A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D6AB2B2-4D17-F0FB-EAD6-91B037B9139A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-				GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Assembly-CSharp.csproj
-		Policies = $0
-		$0.TextStylePolicy = $1
-		$1.inheritsSet = null
-		$1.scope = text/x-csharp
-		$0.CSharpFormattingPolicy = $2
-		$2.inheritsSet = Mono
-		$2.inheritsScope = text/x-csharp
-		$2.scope = text/x-csharp
-		$0.TextStylePolicy = $3
-		$3.FileWidth = 120
-		$3.TabWidth = 4
-		$3.IndentWidth = 4
-		$3.EolMarker = Unix
-		$3.inheritsSet = Mono
-		$3.inheritsScope = text/plain
-		$3.scope = text/plain
-	EndGlobalSection
-
 EndGlobal
