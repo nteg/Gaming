@@ -99,12 +99,14 @@
     <Compile Include="Assets\RoadTool\Editor\RoadTool.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\KajamansRoads\FileNamesDescription.txt" />
-    <None Include="Assets\KajamansRoads\Free\ReadMe.txt" />
     <None Include="Assets\RoadTool\Example\Standard Assets\Skyboxes\_skybox info.txt" />
     <None Include="Assets\RoadTool\README.txt" />
     <None Include="Assets\RoadTool\Texture\Texture Credits.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <None Include="Assets\Standard Assets\Environment\Water (Basic)\Shaders\FXWaterBasic.shader" />
+    <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Advanced.shader" />
+    <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Simple.shader" />
+    <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\WaterInclude.cginc" />
     <None Include="Assets\Standard Assets\Vehicles\Car\CarGuidelines.txt" />
     <None Include="Assets\Standard Assets\Vehicles\Car\Shaders\DiffuseReflectiveShader.shader" />
     <None Include="Assets\Standard Assets\Vehicles\Car\Shaders\ReflectiveDiffuseSpec.shader" />
