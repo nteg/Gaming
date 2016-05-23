@@ -140,7 +140,7 @@ void NavigateTowardsWaypoint()
     inputSteer = RelativeWaypointPosition.x / RelativeWaypointPosition.magnitude;
 
     // now we do the same for torque, but make sure that it doesn't apply any engine torque when going around a sharp turn...
-    if (Mathf.Abs(inputSteer) < 0.35)
+    if (Mathf.Abs(inputSteer) < 0.4)
         inputTorque = RelativeWaypointPosition.z / RelativeWaypointPosition.magnitude - Mathf.Abs(inputSteer);
     else
         inputTorque = 0.0f;

@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\AICar.cs" />
     <Compile Include="Assets\Scripts\Paths.cs" />
     <Compile Include="Assets\Scripts\RaiseLowerTerrain.cs" />
+    <Compile Include="Assets\Scripts\RayCasting.cs" />
     <Compile Include="Assets\Scripts\Test.cs" />
     <Compile Include="Assets\Scripts\Waypoints.cs" />
     <Compile Include="Assets\Scripts\WheelAlign.cs" />
