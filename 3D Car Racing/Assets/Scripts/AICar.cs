@@ -138,10 +138,12 @@ void NavigateTowardsWaypoint()
 
     // by dividing the horizontal position by the magnitude, we get a decimal percentage of the turn angle that we can use to drive the wheels
     inputSteer = RelativeWaypointPosition.x / RelativeWaypointPosition.magnitude;
-
+        float inputSteerVal = Mathf.Abs(inputSteer);
     // now we do the same for torque, but make sure that it doesn't apply any engine torque when going around a sharp turn...
-    if (Mathf.Abs(inputSteer) < 0.4)
+    if (inputSteerVal  < 0.4)
         inputTorque = RelativeWaypointPosition.z / RelativeWaypointPosition.magnitude - Mathf.Abs(inputSteer);
+    else if(inputSteerVal < 0.46 &&  inputSteerVal > 0.4 )
+            inputTorque = 400.0f;
     else
         inputTorque = 0.0f;
 
