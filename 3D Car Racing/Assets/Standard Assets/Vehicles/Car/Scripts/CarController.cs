@@ -170,7 +170,7 @@ namespace UnityStandardAssets.Vehicles.Car
             AddDownForce();
             CheckForWheelSpin();
             TractionControl();
-            speedLabel.text = Mathf.RoundToInt(CurrentSpeed).ToString();
+            speedLabel.text = Mathf.RoundToInt(m_Rigidbody.velocity.magnitude * 3.6f).ToString();
         }
 
 
