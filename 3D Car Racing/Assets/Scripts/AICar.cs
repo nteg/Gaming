@@ -8,7 +8,7 @@ public class AICar : MonoBehaviour
     public WheelCollider FrontRightWheel;
     // These variables are for the gears, the array is the list of ratios. The script
     // uses the defined gear ratios to determine how much torque to apply to the wheels.
-    public float[] GearRatio ;
+    public float[] GearRatio;
     public int CurrentGear = 0;
     // These variables are just for applying torque to the wheels and shifting gears.
     // using the defined Max and Min Engine RPM, the script can determine what gear the
@@ -29,6 +29,12 @@ public class AICar : MonoBehaviour
     // in the desired direction.
     private float inputSteer = 0;
     private float inputTorque = 0;
+    //Variables related to the sensors
+    public float obstacleRange = 15f;
+    public float rotationSpeed = 30f;
+    //Variables related to ReSpawn
+    public float reSpawnWait = 5.0f;
+    public float reSpawnCounter = 0.0f;
     void Start()
     {
         Vector3 centerOfMass = GetComponent<Rigidbody>().centerOfMass;
@@ -51,6 +57,7 @@ public class AICar : MonoBehaviour
         // applies gas to the engine.
         NavigateTowardsWaypoint();
 
+        //Sensors();
         // Compute the engine RPM based on the average RPM of the two wheels, then call the shift gear function
         EngineRPM = (FrontLeftWheel.rpm + FrontRightWheel.rpm) / 2f * GearRatio[CurrentGear];
         ShiftGears();
@@ -66,12 +73,24 @@ public class AICar : MonoBehaviour
 
         // finally, apply the values to the wheels. The torque applied is divided by the current gear, and
         // multiplied by the calculated AI input variable.
-        FrontLeftWheel.motorTorque = EngineTorque / GearRatio[CurrentGear] * inputTorque;
-        FrontRightWheel.motorTorque = EngineTorque / GearRatio[CurrentGear] * inputTorque;
-
+        bool rever = GetComponent<RayCasting>().reversing;
+        if (!rever)
+        {
+            FrontLeftWheel.motorTorque = EngineTorque / GearRatio[CurrentGear] * inputTorque;
+            FrontRightWheel.motorTorque = EngineTorque / GearRatio[CurrentGear] * inputTorque;
+        }
+        else
+        {//reverse
+            FrontLeftWheel.motorTorque = EngineTorque / GearRatio[CurrentGear] * -inputTorque;
+            FrontRightWheel.motorTorque = EngineTorque / GearRatio[CurrentGear] * -inputTorque;
+        }
         // the steer angle is an arbitrary value multiplied by the calculated AI input.
-        FrontLeftWheel.steerAngle = 10f * inputSteer;
-        FrontRightWheel.steerAngle = 10f * inputSteer;
+        if (GetComponent<RayCasting>().flag == 0)
+        {
+            FrontLeftWheel.steerAngle = 10f * inputSteer;
+            FrontRightWheel.steerAngle = 10f * inputSteer;
+        }
+        ReSpawn();
     }
     void ShiftGears()
     {
@@ -112,50 +131,73 @@ public class AICar : MonoBehaviour
         }
     }
 
-void GetWaypoints()
-{
-    // Now, this function basically takes the container object for the waypoints, then finds all of the transforms in it,
-    // once it has the transforms, it checks to make sure it's not the container, and adds them to the array of waypoints.
-    Transform[] potentialWaypoints = WayPoints.GetComponentsInChildren<Transform>();
-    waypoints = new List<Transform>();
-
-    foreach (Transform potentialWaypoint in potentialWaypoints)
+    void GetWaypoints()
     {
-        if (potentialWaypoint != WayPoints.transform)
-            waypoints.Add(potentialWaypoint);
+        // Now, this function basically takes the container object for the waypoints, then finds all of the transforms in it,
+        // once it has the transforms, it checks to make sure it's not the container, and adds them to the array of waypoints.
+        Transform[] potentialWaypoints = WayPoints.GetComponentsInChildren<Transform>();
+        waypoints = new List<Transform>();
+
+        foreach (Transform potentialWaypoint in potentialWaypoints)
+        {
+            if (potentialWaypoint != WayPoints.transform)
+                waypoints.Add(potentialWaypoint);
+        }
     }
-}
 
-void NavigateTowardsWaypoint()
-{
-    // now we just find the relative position of the waypoint from the car transform,
-    // that way we can determine how far to the left and right the waypoint is.
-    Vector3 RelativeWaypointPosition = transform.InverseTransformPoint(new Vector3(
-                                                waypoints[currentWaypoint].position.x,
-                                                transform.position.y,
-                                                waypoints[currentWaypoint].position.z));
+    void NavigateTowardsWaypoint()
+    {
+        // now we just find the relative position of the waypoint from the car transform,
+        // that way we can determine how far to the left and right the waypoint is.
+        Vector3 RelativeWaypointPosition = transform.InverseTransformPoint(new Vector3(
+                                                    waypoints[currentWaypoint].position.x,
+                                                    transform.position.y,
+                                                    waypoints[currentWaypoint].position.z));
 
 
-    // by dividing the horizontal position by the magnitude, we get a decimal percentage of the turn angle that we can use to drive the wheels
-    inputSteer = RelativeWaypointPosition.x / RelativeWaypointPosition.magnitude;
+        // by dividing the horizontal position by the magnitude, we get a decimal percentage of the turn angle that we can use to drive the wheels
+        inputSteer = RelativeWaypointPosition.x / RelativeWaypointPosition.magnitude;
         float inputSteerVal = Mathf.Abs(inputSteer);
-    // now we do the same for torque, but make sure that it doesn't apply any engine torque when going around a sharp turn...
-    if (inputSteerVal  < 0.4)
-        inputTorque = RelativeWaypointPosition.z / RelativeWaypointPosition.magnitude - Mathf.Abs(inputSteer);
-    else if(inputSteerVal < 0.46 &&  inputSteerVal > 0.4 )
+        // now we do the same for torque, but make sure that it doesn't apply any engine torque when going around a sharp turn...
+        if (inputSteerVal < 0.4)
+            inputTorque = RelativeWaypointPosition.z / RelativeWaypointPosition.magnitude - Mathf.Abs(inputSteer);
+        else if (inputSteerVal < 0.46 && inputSteerVal > 0.4)
             inputTorque = 400.0f;
-    else
-        inputTorque = 0.0f;
+        else
+            inputTorque = 0.0f;
 
-    // this just checks if the car's position is near enough to a waypoint to count as passing it, if it is, then change the target waypoint to the
-    // next in the list.
-    if (RelativeWaypointPosition.magnitude < 20)
-    {
-        currentWaypoint++;
+        // this just checks if the car's position is near enough to a waypoint to count as passing it, if it is, then change the target waypoint to the
+        // next in the list.
+        if (RelativeWaypointPosition.magnitude < 20)
+        {
+            currentWaypoint++;
 
-        if (currentWaypoint >= waypoints.Count)
-            currentWaypoint = 0;
+            if (currentWaypoint >= waypoints.Count)
+                currentWaypoint = 0;
+        }
+
     }
+    private void ReSpawn()
+    {
+        if (GetComponent<Rigidbody>().velocity.magnitude < .5)
+        {
+            reSpawnCounter += Time.deltaTime;
+            if (reSpawnCounter >= reSpawnWait)
+            {
+                if (currentWaypoint == 0)
+                {
+                    transform.position = waypoints[waypoints.Count - 1].position;
+                }
+                else
+                {
 
-}
+                    transform.position = waypoints[currentWaypoint - 1].position;
+                }
+                reSpawnCounter = 0;
+                //incase car is flipped
+                Vector3 zAxisAngle = transform.localEulerAngles;
+                zAxisAngle.z = 0;
+            }
+        }
+    }
 }
