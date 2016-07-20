@@ -6,11 +6,10 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: SkyCarBodyGrey
-  m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _DETAIL_MUL _LIGHTMAPPING_STATIC_LIGHTMAPS _NORMALMAP _UVPRIM_UV1
-    _UVSEC_UV1
-  m_LightmapFlags: 0
+  m_Name: brake_shoes
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
   m_CustomRenderQueue: -1
   stringTagMap: {}
   m_SavedProperties:
@@ -20,14 +19,14 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 9ba7fba9d6ffa3f41bf3ed18e434762f, type: 3}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _BumpMap
         second:
-          m_Texture: {fileID: 2800000, guid: d4ffb7d0ebee510498fba9d50f2296f7, type: 3}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -42,13 +41,6 @@ Material:
           name: _ParallaxMap
         second:
           m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _OcclusionMap
-        second:
-          m_Texture: {fileID: 2800000, guid: bd0d469704e7c934ebddc45ece4c1868, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -74,23 +66,16 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _Occlusion
-        second:
-          m_Texture: {fileID: 2800000, guid: bd0d469704e7c934ebddc45ece4c1868, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _SpecGlossMap
+          name: _OcclusionMap
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _Cube
+          name: _MetallicGlossMap
         second:
-          m_Texture: {fileID: 8900000, guid: d42f3408b3c63734aa9f43fbbf3c9854, type: 2}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -108,14 +93,6 @@ Material:
         second: 0.5
       data:
         first:
-          name: _AlphaTestRef
-        second: 0.5
-      data:
-        first:
-          name: _Shininess
-        second: 0.48942593
-      data:
-        first:
           name: _Parallax
         second: 0.02
       data:
@@ -125,7 +102,7 @@ Material:
       data:
         first:
           name: _Glossiness
-        second: 0.15
+        second: 0.5
       data:
         first:
           name: _BumpScale
@@ -136,66 +113,26 @@ Material:
         second: 1
       data:
         first:
-          name: _DetailNormalMapScale
-        second: 0
-      data:
-        first:
           name: _UVSec
         second: 0
       data:
         first:
-          name: _EmissionScaleUI
-        second: 0
+          name: _DetailNormalMapScale
+        second: 1
       data:
         first:
           name: _Mode
         second: 0
       data:
         first:
-          name: _Lightmapping
+          name: _Metallic
         second: 0
-      data:
-        first:
-          name: _EmissionScale
-        second: 1
-      data:
-        first:
-          name: _DetailAlbedoMultiplier
-        second: 4.594794
-      data:
-        first:
-          name: _UVPrim
-        second: 0
-      data:
-        first:
-          name: _DetailMode
-        second: 1
     m_Colors:
       data:
         first:
           name: _EmissionColor
-        second: {r: 0, g: 0, b: 0, a: 0}
+        second: {r: 0, g: 0, b: 0, a: 1}
       data:
         first:
           name: _Color
-        second: {r: 0.49803922, g: 0.49803922, b: 0.49803922, a: 0.28627452}
-      data:
-        first:
-          name: _SpecColor
-        second: {r: 0.09803922, g: 0.09803922, b: 0.09803922, a: 1}
-      data:
-        first:
-          name: _EmissionColorUI
-        second: {r: 0, g: 0, b: 0, a: 1}
-      data:
-        first:
-          name: _EmissionColorWithMapUI
-        second: {r: 0, g: 0, b: 0, a: 1}
-      data:
-        first:
-          name: _SpecularColor
-        second: {r: 0.3455882, g: 0.3455882, b: 0.3455882, a: 1}
-      data:
-        first:
-          name: _ReflectColor
-        second: {r: 0.2205882, g: 0.2205882, b: 0.2205882, a: 0.5019608}
+        second: {r: 0.447, g: 0.447, b: 0.447, a: 1}

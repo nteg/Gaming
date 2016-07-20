@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Cube
   - Road
+  - CheckPoint
+  - Car
+  - Boundary
+  - Terrain
   layers:
   - Default
   - TransparentFX
@@ -15,8 +19,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Checkpoints
+  - Boundary
   - 
   - 
   - 

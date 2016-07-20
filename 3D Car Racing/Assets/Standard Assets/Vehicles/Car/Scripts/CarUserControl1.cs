@@ -1,12 +1,12 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
 namespace UnityStandardAssets.Vehicles.Car
 {
-    [RequireComponent(typeof (CarController))]
+    [RequireComponent(typeof(CarController))]
     [RequireComponent(typeof(GameTimer))]
-    public class CarUserControl : MonoBehaviour
+    public class CarUserControl1 : MonoBehaviour
     {
         private CarController m_Car; // the car controller we want to use
         private GameTimer timer;
@@ -24,8 +24,8 @@ namespace UnityStandardAssets.Vehicles.Car
             if (timer.startRace)
             {
                 // pass the input to the car!
-                float h = CrossPlatformInputManager.GetAxis("Horizontal");
-                float v = CrossPlatformInputManager.GetAxis("Vertical");
+                float h = CrossPlatformInputManager.GetAxis("Horizontal1");
+                float v = CrossPlatformInputManager.GetAxis("Vertical1");
 #if !MOBILE_INPUT
                 float handbrake = CrossPlatformInputManager.GetAxis("Jump");
                 m_Car.Move(h, v, v, handbrake);

@@ -58,12 +58,6 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
@@ -77,9 +71,13 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\AICar.cs" />
     <Compile Include="Assets\Scripts\AntiRollBar.cs" />
+    <Compile Include="Assets\Scripts\CheckpointController.cs" />
+    <Compile Include="Assets\Scripts\Checkpoints.cs" />
+    <Compile Include="Assets\Scripts\DisplayScript.cs" />
     <Compile Include="Assets\Scripts\Paths.cs" />
     <Compile Include="Assets\Scripts\RaiseLowerTerrain.cs" />
     <Compile Include="Assets\Scripts\RayCasting.cs" />
+    <Compile Include="Assets\Scripts\Timer.cs" />
     <Compile Include="Assets\Scripts\Waypoints.cs" />
     <Compile Include="Assets\Scripts\WheelAlign.cs" />
   </ItemGroup>
