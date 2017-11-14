@@ -88,7 +88,7 @@ public class AICar : MonoBehaviour
                 FrontLeftWheel.motorTorque = motorTor;
                 FrontRightWheel.motorTorque = motorTor;
                 float inputSteerVal = Mathf.Abs(inputSteer);
-                if (inputSteerVal < 0.1)
+                if (inputSteerVal < 0.15)
                 {
                     RearLeftWheel.motorTorque = motorTor;
                     RearRightWheel.motorTorque = motorTor;
@@ -99,6 +99,22 @@ public class AICar : MonoBehaviour
                     RearRightWheel.motorTorque = 0;
 
                 }
+                if (inputSteerVal > 0.35 && GetComponent<RayCasting>().flag == 0 &&  GetComponent<Rigidbody>().velocity.magnitude > 5)
+                {
+                    FrontLeftWheel.brakeTorque = 5;
+                    FrontRightWheel.brakeTorque = 5;
+                    RearLeftWheel.brakeTorque = 5;
+                    RearRightWheel.brakeTorque = 5;
+                }
+                else if(GetComponent<RayCasting>().flag == 0)
+                {
+                    FrontLeftWheel.brakeTorque = 0;
+                    FrontRightWheel.brakeTorque = 0;
+                    RearLeftWheel.brakeTorque = 0;
+                    RearRightWheel.brakeTorque = 0;
+
+                }
+
             }
             else
             {//reverse
@@ -106,6 +122,10 @@ public class AICar : MonoBehaviour
                 FrontRightWheel.motorTorque = EngineTorque / GearRatio[CurrentGear] * -reverseTorqueFactor;
                 RearLeftWheel.motorTorque = EngineTorque / GearRatio[CurrentGear] * -reverseTorqueFactor;
                 RearRightWheel.motorTorque = EngineTorque / GearRatio[CurrentGear] * -reverseTorqueFactor;
+                FrontLeftWheel.brakeTorque = 0;
+                FrontRightWheel.brakeTorque = 0;
+                RearLeftWheel.brakeTorque = 0;
+                RearRightWheel.brakeTorque = 0;
             }
             // the steer angle is an arbitrary value multiplied by the calculated AI input.
             if (GetComponent<RayCasting>().flag == 0)
@@ -191,7 +211,7 @@ public class AICar : MonoBehaviour
             inputTorque = RelativeWaypointPosition.z / RelativeWaypointPosition.magnitude - Mathf.Abs(inputSteer);
         else if (inputSteerVal > 0.2 && inputSteerVal < 0.4 && GetComponent<Rigidbody>().velocity.magnitude > .5)
             inputTorque = 0.5f;
-        else if (!rever && GetComponent<Rigidbody>().velocity.magnitude > .5)
+        else if (!rever && GetComponent<Rigidbody>().velocity.magnitude > 5)
             inputTorque = 0.0f;
         else
             inputTorque = 0.5f;
@@ -224,14 +244,7 @@ public class AICar : MonoBehaviour
                     transform.position = waypoints[currentWaypoint - 1].position;
                 }
                 reSpawnCounter = 0;
-                //incase car is flipped
-                Vector3 zAxisAngle = transform.localEulerAngles;
-                zAxisAngle.z = 90;
-                Vector3 RelativeWaypointPosition = transform.InverseTransformPoint(new Vector3(
-                                                    waypoints[currentWaypoint].position.x,
-                                                    transform.position.y,
-                                                    waypoints[currentWaypoint].position.z));
-                zAxisAngle.y = RelativeWaypointPosition.y;
+                transform.localEulerAngles = new Vector3(0, waypoints[currentWaypoint].localRotation.y, 0);
             }
         }
     }

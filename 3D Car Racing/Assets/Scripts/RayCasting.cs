@@ -32,7 +32,8 @@ public class RayCasting : MonoBehaviour {
     // These variables allow the script to power the wheels of the car.
     public WheelCollider FrontLeftWheel;
     public WheelCollider FrontRightWheel;
-
+    public WheelCollider RearLeftWheel;
+    public WheelCollider RearRightWheel;
     // Update is called once per frame
     void Update() {
         if (terrain.GetComponent<Timer>().startRace)
@@ -54,7 +55,7 @@ public class RayCasting : MonoBehaviour {
             {
                 if (hit.collider.tag != "Road" && !reversing && hit.collider.tag != "CheckPoint")
                 {
-                    if (GetComponent<Rigidbody>().velocity.magnitude < .5 && !reversing)
+                    if (!reversing && GetComponent<Rigidbody>().velocity.magnitude > 5)
                     {
                         flag++;
                         FrontLeftWheel.brakeTorque = deAcerlationSpeed;
@@ -87,7 +88,7 @@ public class RayCasting : MonoBehaviour {
             {
                 if (hit.collider.tag != "Road" && hit.collider.tag != "CheckPoint")
                 {
-                    if (GetComponent<Rigidbody>().velocity.magnitude < .5 && !reversing)
+                    if (!reversing && GetComponent<Rigidbody>().velocity.magnitude > 5)
                     {
                         flag++;
                         //moving car to the left to avoid obstacle
@@ -100,7 +101,7 @@ public class RayCasting : MonoBehaviour {
             { //Front Angled Right Sensor
                 if (hit.collider.tag != "Road" && hit.collider.tag != "CheckPoint")
                 {
-                    if (GetComponent<Rigidbody>().velocity.magnitude < .5 && !reversing)
+                    if (!reversing && GetComponent<Rigidbody>().velocity.magnitude > 5)
                     {
                         flag++;
                         senstivity -= 0.5f;
@@ -117,7 +118,7 @@ public class RayCasting : MonoBehaviour {
             {
                 if (hit.collider.tag != "Road" && hit.collider.tag != "CheckPoint")
                 {
-                    if (GetComponent<Rigidbody>().velocity.magnitude < .5 && !reversing)
+                    if (!reversing && GetComponent<Rigidbody>().velocity.magnitude > 5)
                     {
                         flag++;
                         senstivity += 0.5f;
@@ -130,7 +131,7 @@ public class RayCasting : MonoBehaviour {
             { //Front Angled Left Sensor
                 if (hit.collider.tag != "Road" && hit.collider.tag != "CheckPoint")
                 {
-                    if (GetComponent<Rigidbody>().velocity.magnitude < .5 && !reversing)
+                    if (!reversing && GetComponent<Rigidbody>().velocity.magnitude > 5)
                     {
                         flag++;
                         senstivity += 0.5f;
@@ -171,15 +172,18 @@ public class RayCasting : MonoBehaviour {
                 {
                     if (hit.collider.tag != "Road" && hit.collider.tag != "CheckPoint")
                     {
-                        if (hit.normal.x < 0)
+                        if(!reversing)
                         {
-                            senstivity = -0.5f;
+                            if (hit.normal.x < 0)
+                            {
+                                senstivity = -0.5f;
+                            }
+                            else
+                            {
+                                senstivity = 0.5f;
+                            }
+                            Debug.DrawRay(pos, forward, Color.white);
                         }
-                        else
-                        {
-                            senstivity = 0.5f;
-                        }
-                        Debug.DrawRay(pos, forward, Color.white);
                     }
                 }
             }

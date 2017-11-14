@@ -83,6 +83,7 @@
     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\CarSelfRighting.cs" />
     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\CarUserControl.cs" />
     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\CarUserControl1.cs" />
+    <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\CarUserControl2.cs" />
     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\GameTimer.cs" />
     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\Mudguard.cs" />
     <Compile Include="Assets\Standard Assets\Vehicles\Car\Scripts\SkidTrail.cs" />
